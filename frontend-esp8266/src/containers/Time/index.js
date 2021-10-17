@@ -6,8 +6,8 @@ const TimeContainer = () => {
     return (
         <div>
             <AppHeader />
-            <h1>Time Setup</h1>
-            <Link to= "/">Home</Link>
+            <h1 style={{fontSize: 30}}>Time Setup</h1>
+            
         </div>
     );
 };

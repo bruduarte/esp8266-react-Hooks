@@ -4,7 +4,7 @@ import AppHeader from '../../components/header';
 import { wifi } from '../../context/actions/configwifi';
 
 const WifiContainer = () => {
-    //using useEffect here just to test the action described by the function "wifi". 
+    //using useEffect here just to test the action described by the function "wifi" which is an API post request. 
     useEffect(()=>{
         wifi();
     },[]);
@@ -12,8 +12,8 @@ const WifiContainer = () => {
     return (
         <div>
             <AppHeader />
-            <h1>WiFi Configuration</h1>
-            <Link to="/">Home</Link>
+            <h1 style={{fontSize: 30}}>WiFi Configuration</h1>
+            
         </div>
     );
 };

@@ -6,9 +6,8 @@ const DefaultContainer = () => {
     return (
         <div>
             <AppHeader />
-            <h1>Welcome</h1>
-            <Link to= "/wificonfiguration">Setup WiFi</Link>
-            <Link to="/time">Setup Time</Link>
+            <h1 style={{fontSize: 60}}>Welcome :)</h1>
+            <h2>You can start the setup choosing from the Menu bar!</h2>
         </div>
     );
 };
