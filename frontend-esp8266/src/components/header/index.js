@@ -1,12 +1,12 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Button, Icon, Image, Menu } from 'semantic-ui-react';
-import circuit from "../../assets/images/circuit.svg";
+import { Button, Icon, Menu } from 'semantic-ui-react';
+import { GiCircuitry } from "react-icons/gi";
 
 const AppHeader = () => {
     return (
         <Menu secondary pointing>
-            <Image src={circuit} width={50} as={Link} to="/"></Image>
+            <GiCircuitry size={50} style={{ fill: 'orange' }} />
             <Menu.Item as={Link} to="/" style={{fontSize: 24}}>ESP8266</Menu.Item>
             <Menu.Item position="right">
                 <Button as={Link} to="/wificonfiguration" basic icon color="teal">
