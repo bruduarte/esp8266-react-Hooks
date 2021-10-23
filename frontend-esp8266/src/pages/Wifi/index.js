@@ -1,15 +1,17 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import AppHeader from '../../components/header';
 
-const TimeContainer = () => {
+
+const WifiContainer = () => {
+
+
     return (
         <div>
             <AppHeader />
-            <h1 style={{fontSize: 30}}>Time Setup</h1>
+            <h1 style={{fontSize: 30}}>WiFi Configuration</h1>
             
         </div>
     );
 };
 
-export default TimeContainer;
+export default WifiContainer;

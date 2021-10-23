@@ -1,7 +1,7 @@
 /*routes configurations*/
-import WifiComponent from "../containers/Wifi";
-import TimeComponent from "../containers/Time";
-import DefaultComponent from "../containers/Default";
+import WifiComponent from "../pages/Wifi";
+import TimeComponent from "../pages/Time";
+import DefaultComponent from "../pages/Default";
 
 const routes= [
     {
