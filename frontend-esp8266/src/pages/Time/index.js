@@ -1,43 +1,42 @@
-import React, { useState } from 'react';
-import { Grid, Segment, Header, Form, Button } from 'semantic-ui-react';
+import React, { useState, useReducer } from 'react';
+import { Grid, Segment, Header, Form, Button, Message, Checkbox } from 'semantic-ui-react';
 import AppHeader from '../../components/header';
 import TimeDataService from "../../services/dataService";
+import timezones from '../../assets/timezones';
+
 
 const TimeContainer = () => {
 
-    const initialTimezone = {
-        area: "",
-        city: "",
-
-    };
-
-    const [timezone, setTimezone] = useState(initialTimezone);
+    const [input, setInput] = useState(0);
+    const [error, setError] = useState("");
+    const [checked, toggle] = useReducer((checked) => !checked, false);
 
 
-    const handleInputTimezone = event => {
-        const { name, value } = event.target;
-        setTimezone({...timezone, [name]: value});
-        console.log(name, value);
+    const handleDropdownChange = ( event, data ) => {
+        setInput({[data.name]:data.value});
+        console.log({[data.name]:data.value});
     };
 
     const saveTimeConfig = () => {
         var data = {
-            area: timezone.area,
-            city: timezone.city
+            timeOffset: input.timeOffset,
+            daylightSavingTime: checked,
         };
     
 
         TimeDataService.onSubmitTime(data)
             .then(response => {
-                setTimezone({
-                    area: response.data.area,
-                    city: response.data.city,
+                setInput({
+                    timeOffset: response.data.timeOffset,
+                    daylightSavingTime: response.data.daylightSavingTime,
                 });
 
                 console.log(response.data);
             })
-            .catch(e => {
-                console.log(e);
+            .catch((e) => {
+                console.log(e.data);
+                setError(e.data);
+                
             });
         
     };
@@ -49,29 +48,31 @@ const TimeContainer = () => {
 
             <Grid centered>
                 <Grid.Column style={{maxWidth: 550, marinTop: 20}}>
-                    <Header textAlign='center'>Time Setup</Header>
+                    <Header textAlign='center'>Timezone Setup</Header>
                     <Segment>
                         <Form>
+                            {error && <Message header="Error" content={error} error/>}
                             <Form.Field>
-                                <Form.Input
-                                    value={timezone.area}
-                                    onChange={handleInputTimezone}
-                                    name="area"
-                                    placeholder="please enter your region"
-                                    label="Region"
-                                    
-                                />
+                                <label>Timezone</label>
+                                <Form.Dropdown
+                                    fluid
+                                    value={input.timezone} 
+                                    placeholder="Please, select your timezone" 
+                                    clearable 
+                                    options={timezones} 
+                                    selection 
+                                    name="timeOffset" 
+                                    onChange={handleDropdownChange}
+                                />    
+
                             </Form.Field>
                             <Form.Field>
-                                <Form.Input 
-                                    value={timezone.city}
-                                    onChange={handleInputTimezone}
-                                    name="city" 
-                                    type="city" 
-                                    placeholder="please enter your city" 
-                                    label="City"
-
-                            />
+                                <Checkbox 
+                                    label="Daylight Saving Time?"
+                                    name="daylightSavingTime"
+                                    onClick={toggle}
+                                    
+                                />
                             </Form.Field>
                             <Button 
                                 onClick={saveTimeConfig} 

@@ -1,6 +1,4 @@
-import { cloneNode } from '@babel/types';
 import React from 'react';
-import { Link } from 'react-router-dom';
 import AppHeader from '../../components/header';
 
 const DefaultContainer = () => {

@@ -34,6 +34,219 @@
       "area": "Europe",
       "city": "Paris",
       "id": "SieLfCs"
+    },
+    {
+      "area": "America",
+      "city": "Petrolina",
+      "id": "PUmL-jC"
+    },
+    {
+      "city": "Rio de Janeiro",
+      "id": "vlqf7RN"
+    },
+    {
+      "area": "America",
+      "city": "Rio de Janeiro",
+      "id": "LlRWUZe"
+    },
+    {
+      "id": "BVORJSt"
+    },
+    {
+      "id": "eKUxTWS"
+    },
+    {
+      "id": "SPZ6HqL"
+    },
+    {
+      "id": "izvEvFr"
+    },
+    {
+      "timeOffset": -21600,
+      "id": "8NSZ9s9"
+    },
+    {
+      "timeOffset": -36000,
+      "daylightSavingTime": false,
+      "id": "UPX30cU"
+    },
+    {
+      "timeOffset": -21600,
+      "daylightSavingTime": false,
+      "id": "Hqt0egn"
+    },
+    {
+      "timeOffset": -14400,
+      "id": "KmQs6o_"
+    },
+    {
+      "timeOffset": -39600,
+      "id": "KA3ztnq"
+    },
+    {
+      "timeOffset": -10800,
+      "daylightSavingTime": false,
+      "id": "V8yFJJd"
+    },
+    {
+      "timeOffset": 14400,
+      "daylightSavingTime": true,
+      "id": "yqZwK87"
+    },
+    {
+      "timeOffset": 14400,
+      "daylightSavingTime": true,
+      "id": "TEAYs06"
+    },
+    {
+      "timeOffset": 14400,
+      "daylightSavingTime": true,
+      "id": "N3kLAK2"
+    },
+    {
+      "timeOffset": 14400,
+      "daylightSavingTime": true,
+      "id": "DkKJKtR"
+    },
+    {
+      "timeOffset": 14400,
+      "daylightSavingTime": true,
+      "id": "BSTy_Je"
+    },
+    {
+      "timeOffset": 14400,
+      "daylightSavingTime": false,
+      "id": "CI3ULoM"
+    },
+    {
+      "timeOffset": 14400,
+      "daylightSavingTime": true,
+      "id": "RiP4H-X"
+    },
+    {
+      "timeOffset": 14400,
+      "daylightSavingTime": false,
+      "id": "L2lMcOG"
+    },
+    {
+      "timeOffset": 14400,
+      "daylightSavingTime": true,
+      "id": "Ure6a7u"
+    },
+    {
+      "timeOffset": 14400,
+      "daylightSavingTime": false,
+      "id": "tm8tBn5"
+    },
+    {
+      "timeOffset": 14400,
+      "daylightSavingTime": true,
+      "id": "qxI-nHD"
+    },
+    {
+      "timeOffset": 14400,
+      "daylightSavingTime": false,
+      "id": "TXJNpf-"
+    },
+    {
+      "timeOffset": 32400,
+      "daylightSavingTime": true,
+      "id": "R0o0Qad"
+    },
+    {
+      "timeOffset": 18000,
+      "daylightSavingTime": false,
+      "id": "nZOl5jI"
+    },
+    {
+      "timeOffset": 36000,
+      "daylightSavingTime": true,
+      "id": "GY7DrAL"
+    },
+    {
+      "timeOffset": -36000,
+      "daylightSavingTime": false,
+      "id": "LQgrt1q"
+    },
+    {
+      "timeOffset": -10800,
+      "daylightSavingTime": false,
+      "id": "xIxPqg9"
+    },
+    {
+      "timeOffset": -10800,
+      "daylightSavingTime": true,
+      "id": "_ptFuYD"
+    },
+    {
+      "timeOffset": -10800,
+      "daylightSavingTime": false,
+      "id": "MXmfTjG"
+    },
+    {
+      "timeOffset": -10800,
+      "daylightSavingTime": true,
+      "id": "xFhpnV9"
+    },
+    {
+      "timeOffset": -36000,
+      "daylightSavingTime": false,
+      "id": "lmKlS25"
+    },
+    {
+      "timeOffset": -36000,
+      "daylightSavingTime": false,
+      "id": "TvNZQnI"
+    },
+    {
+      "timeOffset": -36000,
+      "daylightSavingTime": false,
+      "id": "DCwFWXf"
+    },
+    {
+      "timeOffset": -36000,
+      "daylightSavingTime": false,
+      "id": "f1aNdl0"
+    },
+    {
+      "timeOffset": -36000,
+      "daylightSavingTime": false,
+      "id": "IJ5OTbp"
+    },
+    {
+      "timeOffset": -36000,
+      "daylightSavingTime": true,
+      "id": "gxQFrNS"
+    },
+    {
+      "timeOffset": -14400,
+      "daylightSavingTime": true,
+      "id": "mnK9mAu"
+    },
+    {
+      "timeOffset": -10800,
+      "daylightSavingTime": false,
+      "id": "6i5PvrS"
+    },
+    {
+      "timeOffset": -25200,
+      "daylightSavingTime": false,
+      "id": "Se5LoSu"
+    },
+    {
+      "timeOffset": -14400,
+      "daylightSavingTime": true,
+      "id": "g3yYfBV"
+    },
+    {
+      "timeOffset": 10800,
+      "daylightSavingTime": false,
+      "id": "J1VFcGF"
+    },
+    {
+      "timeOffset": 14400,
+      "daylightSavingTime": true,
+      "id": "RHaaIjG"
     }
   ]
 }
