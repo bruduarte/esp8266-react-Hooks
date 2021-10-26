@@ -10,10 +10,6 @@ import "react-datepicker/dist/react-datepicker.css";
 
 const TimeContainer = () => {
 
-    // const initialState = {
-
-    // };
-
     const [input, setInput] = useState(0);
     const [error, setError] = useState("");
     const [checked, toggle] = useReducer((checked) => !checked, false);
@@ -39,11 +35,21 @@ const TimeContainer = () => {
     };
 
     const saveTimeConfig = () => {
+        let startTime = null;
+        let endTime = null;
+
+        if (checked && startDateTime != null){
+            startTime = startDateTime.getTime();
+        }
+        if (checked && endDateTime != null){
+            endTime = endDateTime.getTime();
+        }
+
         var data = {
             timeOffset: input.timeOffset,
             daylightSavingTime: checked,
-            startDateTime: startDateTime.getTime(),
-            endDateTime: endDateTime.getTime(),
+            startDateTime: startTime,
+            endDateTime: endTime,
         };
     
 
@@ -61,15 +67,18 @@ const TimeContainer = () => {
             .catch((e) => {
                 console.log(e.data);
                 setError(e.data);
-                
+
             });
         
     };
 
-    const handleSubmit = (event) => {
-        event.target.reset();
-        console.log(event.data);
-    }
+    const submitFormValid = (input !== 0) && ((checked && startDateTime && endDateTime) || (!checked && !startDateTime && !endDateTime));
+
+    // const handleSubmit = (event) => {
+    //     event.target = [{}];
+
+        
+    // };
 
 
     return (
@@ -80,7 +89,7 @@ const TimeContainer = () => {
                 <Grid.Column style={{maxWidth: 550, marinTop: 20}}>
                     <Header textAlign='center'>Timezone Setup</Header>
                     <Segment>
-                        <Form onSubmit={handleSubmit}>
+                        <Form>
                             {error && <Message header="Error" content={error} error/>}
                             <Form.Field>
                                 <label>Timezone</label>
@@ -126,11 +135,13 @@ const TimeContainer = () => {
                                     isClearable={true} 
                                 />
                             </Form.Field>
-                            <Button 
+                            <Button
                                 onClick={saveTimeConfig} 
                                 fluid
                                 color="teal" 
-                                type='submit'>Submit
+                                type='submit'
+                                disabled={!submitFormValid}
+                            >Submit
                             </Button>
                         </Form>
                     </Segment>

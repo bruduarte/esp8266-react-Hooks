@@ -333,6 +333,76 @@
       "startDateTime": 1633816800000,
       "endDateTime": 1635279530048,
       "id": "MW6jdM9"
+    },
+    {
+      "timeOffset": -32400,
+      "daylightSavingTime": true,
+      "startDateTime": 1626811200000,
+      "endDateTime": 1635636600000,
+      "id": "A8S9fee"
+    },
+    {
+      "timeOffset": -32400,
+      "daylightSavingTime": true,
+      "startDateTime": 1626811200000,
+      "endDateTime": 1635636600000,
+      "id": "3IypF7a"
+    },
+    {
+      "timeOffset": -39600,
+      "daylightSavingTime": true,
+      "startDateTime": 1633903200000,
+      "endDateTime": 1635458400000,
+      "id": "H9f89vk"
+    },
+    {
+      "timeOffset": -36000,
+      "daylightSavingTime": true,
+      "startDateTime": 1632687300000,
+      "endDateTime": 1634934600000,
+      "id": "COPyHh9"
+    },
+    {
+      "timeOffset": -28800,
+      "daylightSavingTime": true,
+      "startDateTime": null,
+      "endDateTime": null,
+      "id": "M9naxSU"
+    },
+    {
+      "timeOffset": -28800,
+      "daylightSavingTime": true,
+      "startDateTime": null,
+      "endDateTime": null,
+      "id": "SFWLXHX"
+    },
+    {
+      "timeOffset": -36000,
+      "daylightSavingTime": false,
+      "startDateTime": null,
+      "endDateTime": null,
+      "id": "EfVrp36"
+    },
+    {
+      "timeOffset": -36000,
+      "daylightSavingTime": false,
+      "startDateTime": null,
+      "endDateTime": null,
+      "id": "ibmmg6X"
+    },
+    {
+      "timeOffset": -32400,
+      "daylightSavingTime": false,
+      "startDateTime": null,
+      "endDateTime": null,
+      "id": "JFOCQpz"
+    },
+    {
+      "timeOffset": "",
+      "daylightSavingTime": false,
+      "startDateTime": null,
+      "endDateTime": null,
+      "id": "eMMu9Wz"
     }
   ]
 }
