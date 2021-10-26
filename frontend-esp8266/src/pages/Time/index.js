@@ -3,24 +3,47 @@ import { Grid, Segment, Header, Form, Button, Message, Checkbox } from 'semantic
 import AppHeader from '../../components/header';
 import TimeDataService from "../../services/dataService";
 import timezones from '../../assets/timezones';
+import DatePicker from 'react-datepicker';
+import "react-datepicker/dist/react-datepicker.css";
+
 
 
 const TimeContainer = () => {
 
+    // const initialState = {
+
+    // };
+
     const [input, setInput] = useState(0);
     const [error, setError] = useState("");
     const [checked, toggle] = useReducer((checked) => !checked, false);
-
+    const [startDateTime, setStartDateTime] = useState(null);
+    const [endDateTime, setEndDateTime] = useState(null);
+    // const [submit, setSubmi] = useState(false);
 
     const handleDropdownChange = ( event, data ) => {
         setInput({[data.name]:data.value});
         console.log({[data.name]:data.value});
     };
 
+    const handleStartDateTimeChange = (date) => {
+        
+        setStartDateTime(date)
+        console.log(date);
+    };
+
+    const handleEndDateTimeChange = (date) => {
+        
+        setEndDateTime(date)
+        console.log(date);
+    };
+
     const saveTimeConfig = () => {
         var data = {
             timeOffset: input.timeOffset,
             daylightSavingTime: checked,
+            startDateTime: startDateTime.getTime(),
+            endDateTime: endDateTime.getTime(),
         };
     
 
@@ -29,6 +52,8 @@ const TimeContainer = () => {
                 setInput({
                     timeOffset: response.data.timeOffset,
                     daylightSavingTime: response.data.daylightSavingTime,
+                    startDateTime: response.data.startDateTime,
+                    endDateTime: response.data.endDateTime,
                 });
 
                 console.log(response.data);
@@ -41,6 +66,11 @@ const TimeContainer = () => {
         
     };
 
+    const handleSubmit = (event) => {
+        event.target.reset();
+        console.log(event.data);
+    }
+
 
     return (
         <div>
@@ -50,7 +80,7 @@ const TimeContainer = () => {
                 <Grid.Column style={{maxWidth: 550, marinTop: 20}}>
                     <Header textAlign='center'>Timezone Setup</Header>
                     <Segment>
-                        <Form>
+                        <Form onSubmit={handleSubmit}>
                             {error && <Message header="Error" content={error} error/>}
                             <Form.Field>
                                 <label>Timezone</label>
@@ -72,6 +102,28 @@ const TimeContainer = () => {
                                     name="daylightSavingTime"
                                     onClick={toggle}
                                     
+                                />
+                            </Form.Field>
+                            <Form.Field>
+                                <DatePicker 
+                                    placeholderText="Select DST Start Date" 
+                                    disabled={!checked} 
+                                    selected={startDateTime} 
+                                    onChange={handleStartDateTimeChange} 
+                                    showTimeSelect 
+                                    timeFormat="HH:mm"
+                                    timeIntervals={15} 
+                                    isClearable={true} 
+                                />
+                                <DatePicker 
+                                    placeholderText="Select DST End Date" 
+                                    disabled={!checked} 
+                                    selected={endDateTime} 
+                                    onChange={handleEndDateTimeChange} 
+                                    showTimeSelect 
+                                    timeFormat="HH:mm"
+                                    timeIntervals={15}
+                                    isClearable={true} 
                                 />
                             </Form.Field>
                             <Button 

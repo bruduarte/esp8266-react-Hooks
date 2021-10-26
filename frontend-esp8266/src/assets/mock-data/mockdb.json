@@ -247,6 +247,92 @@
       "timeOffset": 14400,
       "daylightSavingTime": true,
       "id": "RHaaIjG"
+    },
+    {
+      "timeOffset": -36000,
+      "daylightSavingTime": true,
+      "id": "rnRfRu4"
+    },
+    {
+      "timeOffset": -39600,
+      "daylightSavingTime": true,
+      "id": "f-gDWFy"
+    },
+    {
+      "timeOffset": -32400,
+      "daylightSavingTime": true,
+      "id": "T7a51cK"
+    },
+    {
+      "timeOffset": -32400,
+      "daylightSavingTime": true,
+      "startDateDay": 21,
+      "startDateMonth": 5,
+      "StartDateTime": 1624226400000,
+      "id": "D1c1f-Z"
+    },
+    {
+      "timeOffset": -32400,
+      "daylightSavingTime": true,
+      "startDateDay": 25,
+      "startDateMonth": 6,
+      "StartDateTime": 1627164000000,
+      "id": "hrMP7UZ"
+    },
+    {
+      "timeOffset": 3600,
+      "daylightSavingTime": true,
+      "startDateTime": 1626818400000,
+      "endDateTime": 1635631200000,
+      "id": "cRcKy4G"
+    },
+    {
+      "timeOffset": 3600,
+      "daylightSavingTime": true,
+      "startDateTime": 1624226400000,
+      "endDateTime": 1635631200000,
+      "id": "u-24RS6"
+    },
+    {
+      "timeOffset": 3600,
+      "daylightSavingTime": true,
+      "startDateTime": 1624744800000,
+      "endDateTime": 1635631200000,
+      "id": "OEC-KS3"
+    },
+    {
+      "timeOffset": 3600,
+      "daylightSavingTime": true,
+      "startDateTime": 1624744800000,
+      "endDateTime": 1635631200000,
+      "id": "Tvh9rdI"
+    },
+    {
+      "timeOffset": -14400,
+      "daylightSavingTime": true,
+      "startDateTime": 1624140000000,
+      "endDateTime": 1635631200000,
+      "id": "1qGLgee"
+    },
+    {
+      "timeOffset": -14400,
+      "daylightSavingTime": true,
+      "startDateTime": 1624140000000,
+      "endDateTime": 1635631200000,
+      "id": "U7MifxI"
+    },
+    {
+      "timeOffset": -14400,
+      "daylightSavingTime": true,
+      "startDateTime": 1624140000000,
+      "endDateTime": 1635631200000,
+      "id": "GKYV9nF"
+    },
+    {
+      "daylightSavingTime": true,
+      "startDateTime": 1633816800000,
+      "endDateTime": 1635279530048,
+      "id": "MW6jdM9"
     }
   ]
 }
