@@ -1,3 +1,6 @@
+#ifndef CONFIGMANAGER
+#define CONFIGMANAGER
+
 #include <Arduino.h>
 #include <ArduinoJson.h>
 #include <LittleFS.h>
@@ -13,14 +16,18 @@ typedef struct ConfigEntry_t{
 
 class ConfigManager{
     private:
-        bool inited;
+        bool initiated;
+        String fileName;
         ConfigEntry configList[MAX_CONFIG_ARRAY];
         unsigned int configSize;
 
     public:
-
         ConfigManager();
-        ErrorType begin(const char* filename);
+        ErrorType begin();
+        String getAllConfig();
+        ErrorType updateConfig(String key, String value);
         unsigned int getConfigSize();
 
 };
+
+#endif

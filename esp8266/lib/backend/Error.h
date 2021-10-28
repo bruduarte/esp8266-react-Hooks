@@ -1,3 +1,6 @@
+#ifndef MYERROR
+#define MYERROR
+
 typedef unsigned int ErrorType;
 
 #define RET_OK    (0)
@@ -6,3 +9,6 @@ typedef unsigned int ErrorType;
 // errors for ConfigManager
 #define ERR_OPEN_CONFIG_FILE                    (0X1000)
 #define ERR_JSON_CONFIG_FILE                    (0X1001)
+#define ERR_CONFIG_NOT_FOUND                    (0X1002)
+
+#endif

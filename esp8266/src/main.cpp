@@ -12,8 +12,9 @@ const char* password = "a6Qmsbhnwrdk";     // The password of the Wi-Fi network
 
 AsyncWebServer server(80);
 AsyncEventSource events("/events");
-RestApi restApi(&server, &events);
-ConfigManager configManager;
+ConfigManager configurationManager;
+RestApi restApi(&server, &events, &configurationManager);
+
 
 void setup() {
   Serial.begin(9600);         // Start the Serial communication to send messages to the computer
@@ -27,7 +28,7 @@ void setup() {
   Serial.print("IP address:\t");
   Serial.println(WiFi.localIP());         // Send the IP address of the ESP8266 to the computer
 
-  configManager.begin(CONFIG_DEFAULT_FILENAME);
+  configurationManager.begin();
 
   server.begin();
 }

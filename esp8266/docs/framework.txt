@@ -1,0 +1,56 @@
+reference project
+https://github.com/rjwats/esp8266-react
+
+https://github.com/maakbaas/esp8266-iot-framework
+
+
+backend services
+/time
+	GET -> returns time info
+	POST -> configure board time
+/wifi
+	/forget -> forget current wifi and enable Access Point (AP)
+	/connect ssdi, passwd -> connect to specified wifi. If not success, enable AP
+	
+/config/
+	GET -> return all custom configurations
+	POST -> add new custom configuration
+	DELETE -> delete a custom configuration
+	/clear all -> delete all custom configs
+
+
+to creat a react app inside the project (frontend folder)
+npm init react-app frontend
+cd frontend
+npm start
+
+latter the frontend build needs to be configured to be compatible with the esp82566 filesystem.
+npm install react-app-rewired to overwrite webpack configurations from react app
+npm install compression-webpack-plugin to compress the build files
+npm install webpack-manifest-plugin for what?
+npm install workbox-webpack-plugin for what?
+
+there are a lot of deprecated packages after the compression-webpack-plugin is included.
+
+https://github.com/facebook/create-react-app/blob/main/packages/react-scripts/config/webpack.config.js
+
+after changing removing .map files from output and
+ the file anme for media - name: 'st/md/[hash:8].[ext]', still the files are too big
+
+/config/config.json
+/www/asset-manifest.json
+/www/css/0.5e36.c.css
+/www/css/2.0b29.c.css
+/www/favicon.ico
+/www/index.html
+/www/js/0.00c8.js
+/www/js/1.f66f.js
+/www/js/2.8fb2.js
+/www/js/2.8fb2.js.LICENSE.txt
+/www/js/3.b3b3.js
+/www/logo192.png
+/www/logo512.png
+/www/manifest.json
+/www/robots.txt
+/www/st/md/278156e4.woff2
+SPIFFS_write error(-10001): File system is full.
