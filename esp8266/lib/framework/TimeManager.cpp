@@ -27,16 +27,33 @@ void TimeManager::update(){
     this->ntpClient->update();
 }
 
-void TimeManager::setFlag(unsigned int mask){
-    this->flags |= mask;
+void TimeManager::setDSToffset(bool DSTactive){
+    this->daylightSavingTime = DSTactive;
 }
 
-void TimeManager::clearFlag(unsigned int mask){
-    this->flags &= ~mask;
+unsigned long TimeManager::getCurrentTime(){
+    if (this->daylightSavingTime){
+       return this->ntpClient->getEpochTime() + TIMEMAN_CONFIG_NTP_DST_OFFSET;
+    }
+    else{
+        return this->ntpClient->getEpochTime();
+    }
+    
 }
 
-unsigned int TimeManager::getFlag(){
-    return this->flags;
+String TimeManager::getFormattedTtime(){
+  unsigned long rawTime = this->getCurrentTime();
+  unsigned long hours = (rawTime % 86400L) / 3600;
+  String hoursStr = hours < 10 ? "0" + String(hours) : String(hours);
+
+  unsigned long minutes = (rawTime % 3600) / 60;
+  String minuteStr = minutes < 10 ? "0" + String(minutes) : String(minutes);
+
+  unsigned long seconds = rawTime % 60;
+  String secondStr = seconds < 10 ? "0" + String(seconds) : String(seconds);
+
+  return hoursStr + ":" + minuteStr + ":" + secondStr;
+
 }
 
 

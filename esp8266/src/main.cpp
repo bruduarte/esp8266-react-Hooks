@@ -69,11 +69,16 @@ void setupTime(){
 
 	ConfigEntry config;
 	Serial.println("Setup time...\n");
-	ErrorType error = configurationManager.getConfig(&config, "timeOffset");
+	ErrorType error = configurationManager.getConfig(&config, TIMEMAN_CONFIG_NTP_OFFSET);
 	if (error == RET_OK){
-		int offset = atoi(config.key.c_str());
+		int offset = atoi(config.value.c_str());
 		timeManager.setTimeOffset(offset, false);
-	}
+
+		Serial.printf("\tNTP server: %s\n", ntpServer);
+    	Serial.printf("\tTime offset: %d\n", offset);
+	}else{
+    	Serial.printf("\tCould not get config %s.\n", TIMEMAN_CONFIG_NTP_OFFSET);
+  	}
 	timeManager.begin();
 	Serial.println("Done :) ...\n");
 	
@@ -83,7 +88,7 @@ void setupConfig(){
 
 	Serial.println("Initializing configuration...\n");
 	configurationManager.begin();
-
+	Serial.printf("\tLoaded %d configurations.\n", configurationManager.getConfigSize());
 	Serial.println("Done :) ...");
 }
 
@@ -100,30 +105,56 @@ void setup() {
 }
 
 void loopTime(){
+	ConfigEntry config;
+	int ntpDSTstartDate = atoi(configurationManager.getConfigValue(TIMEMAN_CONFIG_NTP_DST_START_DATE).c_str()); //gets the start date of DST as ineger
+	int ntpDSTendDate = atoi(configurationManager.getConfigValue(TIMEMAN_CONFIG_NTP_DST_END_DATE).c_str()); //gets the end date of DST as integer
 
 	if (timeManager.getNTPClient()->getEpochTime() > 1609506000){
 	// current time is after Friday, January 1, 2021 1:00:00 PM
     // it means we aleady have a valid time
+		
+		//check if DST is enabled
+		if(configurationManager.getConfigValue(TIMEMAN_CONFIG_NTP_DST_ENABLED) == "true"){
+			int now = timeManager.getNTPClient()->getEpochTime(); //gets current date
+			//check if now is in the range of DST
+			if(now >= ntpDSTstartDate &&  now <= ntpDSTendDate){	
+				timeManager.setDSToffset(true);
+			}else{
+				timeManager.setDSToffset(false);
+			}	
+		}else{
+			timeManager.setDSToffset(false);
+		}
+
 		if(printTime){
 			Serial.print("Current time: ");
-			Serial.println(timeManager.getNTPClient()->getFormattedTime());
+			Serial.println(timeManager.getFormattedTtime());
 			printTime = false;
 		}
-  }
-	if(timeManager.getFlag() & TIME_MAN_FLAG_CONFIG_CHANGED){
+
+
+  	}
+
+
+	if(configurationManager.getConfigStatus(TIMEMAN_CONFIG_NTP_OFFSET).equals(CONFIG_STATUS_CHANGED)){
 		// config has changed. Reload config and force update
-		ConfigEntry config;
-		ErrorType error = configurationManager.getConfig(&config, "timeOffset");
+		
+		ErrorType error = configurationManager.getConfig(&config, TIMEMAN_CONFIG_NTP_OFFSET);
 		if(error == RET_OK){
-			int offset = atoi(config.key.c_str());
+			int offset = atoi(config.value.c_str());
 			timeManager.setTimeOffset(offset, true);  // force update
-			timeManager.clearFlag(TIME_MAN_FLAG_CONFIG_CHANGED);
+			
 			printTime = true;
+
+			configurationManager.updateConfigStatus(TIMEMAN_CONFIG_NTP_OFFSET, "ok");
 		}
 	}else{
 		// no config change. Just run normal update
 		timeManager.update();
 	}
+
+	printTime = true;
+	delay(1000);
 	
 }
 

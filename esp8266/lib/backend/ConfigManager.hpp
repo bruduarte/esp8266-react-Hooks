@@ -8,6 +8,7 @@
 
 #define MAX_CONFIG_ARRAY            (50)
 #define CONFIG_DEFAULT_FILENAME     "/config/config.json"
+#define CONFIG_STATUS_CHANGED       "changed"
 
 typedef struct ConfigEntry_t{
     String key;
@@ -17,16 +18,20 @@ typedef struct ConfigEntry_t{
 class ConfigManager{
     private:
         DynamicJsonDocument jsonDoc;
-        JsonObject configurations;
-
-        ErrorType saveFile(); //internal function to save the file after modification
+        DynamicJsonDocument jsonDocStatus;
+        JsonObject configurations;          //stores configurations data
+        JsonObject configurationStatus;     //stores configuration status
+        ErrorType saveFile();               //internal function to save the file after modification
 
     public:
         ConfigManager();
         ErrorType begin();
         String getAllConfig();
         ErrorType getConfig(ConfigEntry *config, String key);
+        String getConfigValue(String key);
         ErrorType updateConfig(String key, String value);
+        String getConfigStatus(String key);
+        ErrorType updateConfigStatus(String key, String status);
         unsigned int getConfigSize();
 
 };

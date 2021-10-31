@@ -4,13 +4,17 @@
 #include <NTPClient.h>
 #include <Udp.h>
 
-#define TIME_MAN_FLAG_CONFIG_CHANGED    (0x1)
+#define TIMEMAN_CONFIG_NTP_OFFSET           "ntpOffset"
+#define TIMEMAN_CONFIG_NTP_DST_ENABLED      "ntpDSTenabled"
+#define TIMEMAN_CONFIG_NTP_DST_START_DATE   "ntpDSTstartDate"
+#define TIMEMAN_CONFIG_NTP_DST_END_DATE     "ntpDSTendDate"
+#define TIMEMAN_CONFIG_NTP_DST_OFFSET       3600
 
 class TimeManager {
     private:
         UDP& udp;
         NTPClient* ntpClient;
-        unsigned int flags;
+        bool daylightSavingTime;
 
     public:
         TimeManager(UDP& udp, const char* server, int offset);
@@ -18,9 +22,9 @@ class TimeManager {
         void begin();
         void setTimeOffset(int offset, bool update);
         void update();
-        void setFlag(unsigned int mask);
-        void clearFlag(unsigned int mask);
-        unsigned int getFlag();
+        void setDSToffset(bool DSTactive);
+        unsigned long getCurrentTime();
+        String getFormattedTtime();
 
         NTPClient* getNTPClient();
         

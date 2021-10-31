@@ -1,7 +1,8 @@
 #include "ConfigManager.hpp"
 
-ConfigManager::ConfigManager() : jsonDoc(512) {
-    // initialize the jsonDoc with 512 bytes
+ConfigManager::ConfigManager() : jsonDoc(512), jsonDocStatus(512) {
+    // initialize the jsonDoc and jsonDocStatus with 512 bytes
+    this->configurationStatus = this->jsonDocStatus.to<JsonObject>();
 }
 
 //this function loads the configuration file from fileSystem
@@ -59,13 +60,24 @@ ErrorType ConfigManager::getConfig(ConfigEntry *config, String key){
     return RET_NOK;
 }
 
-ErrorType ConfigManager::updateConfig(String key, String value){
+String ConfigManager::getConfigValue(String key){
+    
+    if(this->configurations.containsKey(key)){
+        return this->configurations[key].as<String>();
+    }else{
+        return "configuration_not_found.";
+    }
+    
+}
 
+ErrorType ConfigManager::updateConfig(String key, String value){
+    //avoid using empty content
     if(key.length() > 0 && value.length() > 0){
         //Check if the key exists
         if(this->configurations.containsKey(key)){
             //updates the configuration
             this->configurations[key] = value;
+            this->configurationStatus[key] = "changed";
             //save to file the modification
             return this->saveFile();
         } else {
@@ -102,4 +114,33 @@ ErrorType ConfigManager::saveFile(){
     
 
     return RET_OK;
+}
+
+
+ErrorType ConfigManager::updateConfigStatus(String key, String status){
+    //avoid using empty content
+    if (key.length() > 0 && status.length() > 0){
+        //if key doesn't exists, add it.
+        this->configurationStatus[key] = status;
+        return RET_OK;
+    }else{
+        return ERR_CONFIG_EMPTY_KEY_VALUE;
+    }
+    
+}
+
+String ConfigManager::getConfigStatus(String key){
+    //avoid using empty content
+    if (key.length() > 0){
+        //check if key exists
+        if (this->configurationStatus.containsKey(key)){
+            return this->configurationStatus[key];
+        }else{
+            return "not_found";
+        }
+        
+    }else{
+        return "empty_key";
+    }
+    
 }
