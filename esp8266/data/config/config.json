@@ -1,4 +1,5 @@
 {
   "wifiSSID": "UPC7472663",
-  "wifiPassword": "a6Qmsbhnwrdk"
+  "wifiPassword": "a6Qmsbhnwrdk",
+  "timeOffset": "1200"
 }

@@ -16,15 +16,16 @@ typedef struct ConfigEntry_t{
 
 class ConfigManager{
     private:
-        bool initiated;
-        String fileName;
-        ConfigEntry configList[MAX_CONFIG_ARRAY];
-        unsigned int configSize;
+        DynamicJsonDocument jsonDoc;
+        JsonObject configurations;
+
+        ErrorType saveFile(); //internal function to save the file after modification
 
     public:
         ConfigManager();
         ErrorType begin();
         String getAllConfig();
+        ErrorType getConfig(ConfigEntry *config, String key);
         ErrorType updateConfig(String key, String value);
         unsigned int getConfigSize();
 

@@ -20,66 +20,61 @@ RestApi::RestApi(AsyncWebServer* server, AsyncEventSource* events, ConfigManager
      * */  
 
     
-
-    // list
+    /**
+     * LIST
+     * */
     server->on("/config/list", HTTP_GET, [configurationManager](AsyncWebServerRequest *request){
         String list = configurationManager->getAllConfig();
         request->send(200, "application/json", list);
     });
 
-    // update
-    // https://github.com/me-no-dev/ESPAsyncWebServer#json-body-handling-with-arduinojson
-    // this callback can be used only for POST/PUT/PATCH HTTP methods
-    // expected json format:
-    // {
-    // "wifiSSID": "the wifi ssid",
-    // "wifiPassword": "the wifi password"
-    // }
+    /**
+     * UPDATE
+     * 
+     * https://github.com/me-no-dev/ESPAsyncWebServer#json-body-handling-with-arduinojson
+     * 
+     * This callback can be used only for POST/PUT/PATCH HTTP methods
+     * 
+     * Expected json format: 
+     *    {
+     *      "key": value,
+     *      "key": value,
+     *      .
+     *      .
+     *      .    
+     *    }
+     * 
+     * */ 
+
     AsyncCallbackJsonWebHandler* handler = new AsyncCallbackJsonWebHandler("/config/update", [configurationManager](AsyncWebServerRequest *request, JsonVariant &json) {
         JsonObject jsonObj = json.as<JsonObject>();
         Serial.println("REST:/config/update");
+        String txt = "";
 
-        // check if expected keys are provided
-        if(jsonObj.containsKey("wifiSSID") && jsonObj.containsKey("wifiPassword")){
-            // update config
-            ErrorType error = configurationManager->updateConfig("wifiSSID", jsonObj["wifiPassword"]);
+        for (JsonPair kv : jsonObj){
+            String key = kv.key().c_str();
+            String value = kv.value();
+            Serial.printf("\t%s : %s\n", key.c_str(), value.c_str());
+
+            ErrorType error = configurationManager->updateConfig(key, value);
 
             // check if config update was ok
-            if(error == RET_OK) request->send(200, "text/plain", "ok");
-            else request->send(200, "text/plain", "error: key not found"); //Check errors!!! 
+            if(error != RET_OK) {
+                txt += "Failed to update ";
+                txt += kv.key().c_str();
+                Serial.println(txt);
+                break;
+            } else {txt = "Updated!";}
 
-        }else{
-            // json is in wrong format
-            request->send(200, "text/plain", "error: wrong format");
         }
+        
+        request->send(200, "text/plain", txt);
+        
 
     });
+
     server->addHandler(handler);
 
-    // add
-    server->on("/config/add", HTTP_POST, [](AsyncWebServerRequest *request){
-        String message;
-        if (request->hasParam("body", true)) {
-            message = request->getParam("body", true)->value();
-        } else {
-            message = "No message sent";
-        }
-        Serial.println(message.c_str());
-
-        int args = request->args();
-        for(int i=0;i<args;i++){
-        Serial.printf("ARG[%s]: %s\n", request->argName(i).c_str(), request->arg(i).c_str());
-        }
-
-        request->send(200, "text/plain", "ok");
-    });
-
-    // delete
-    server->on("/config/delete", HTTP_DELETE, [](AsyncWebServerRequest *request){
-        request->send(200, "text/plain", String(ESP.getFreeHeap()));
-    });
-
-    Serial.println("Done.");
 }
 
 
