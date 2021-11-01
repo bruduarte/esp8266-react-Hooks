@@ -13,6 +13,7 @@ class RestApi {
     public:
         RestApi(AsyncWebServer* server, AsyncEventSource* events, ConfigManager *configurationManager);
         ~RestApi();
+        
 
     protected:
 };

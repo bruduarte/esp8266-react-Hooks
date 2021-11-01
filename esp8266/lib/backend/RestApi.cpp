@@ -1,5 +1,6 @@
 /*deal with comunication with frontend*/
 
+
 #include "RestApi.hpp"
 
 RestApi::RestApi(AsyncWebServer* server, AsyncEventSource* events, ConfigManager *configurationManager) {
@@ -75,9 +76,27 @@ RestApi::RestApi(AsyncWebServer* server, AsyncEventSource* events, ConfigManager
 
     server->addHandler(handler);
 
+    server->onNotFound([](AsyncWebServerRequest* request) {
+        if (request->method() == HTTP_OPTIONS) {
+        request->send(200);
+        } else {
+        request->send(404);
+        }
+    });
+
+
+    // Disable CORS if required
+    #if defined(ENABLE_CORS)
+    DefaultHeaders::Instance().addHeader("Access-Control-Allow-Origin", CORS_ORIGIN);
+    DefaultHeaders::Instance().addHeader("Access-Control-Allow-Headers", "Accept, Content-Type, Authorization");
+    DefaultHeaders::Instance().addHeader("Access-Control-Allow-Credentials", "true");
+    #endif
+    
 }
 
 
  
 RestApi::~RestApi() {};
+
+
 
