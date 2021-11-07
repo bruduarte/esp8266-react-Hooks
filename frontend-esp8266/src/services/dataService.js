@@ -2,14 +2,42 @@
 
 import axiosInstance from "../helpers/axios";
 
-const getTime = () => {
-    return axiosInstance.get("/Timezone");
+const getTime = async () => {
+    try{
+        const response = await axiosInstance.get("/Timezone");
+        console.log(response);
+    }
+    catch(e){
+        console.error(e);
+    }
+    // return axiosInstance.get("/Timezone");
 };
 
-const onSubmitTime = (data) => {
-    return axiosInstance.post("/Timezone", data);
+const onSubmitTime = async (data) => {
+    try{
+        //"/config/update"
+        const response = await axiosInstance.post("/Timezone", data);
+        console.log(response.statusText);
+        return response.statusText;
+    }
+    catch(e){
+        console.error(e);
+        return e;
+    }
+}
+
+const onSubmitCredentials = async (data) => {
+    try{
+        const response = await axiosInstance.post("/Wifi", data);
+        console.log(response);
+        return response.statusText;
+    }
+    catch(e){
+        console.error(e);
+        return e;
+    }
 }
 
 
 
-export default {getTime, onSubmitTime};
+export default {getTime, onSubmitTime, onSubmitCredentials};

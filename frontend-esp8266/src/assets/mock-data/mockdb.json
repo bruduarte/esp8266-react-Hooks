@@ -403,6 +403,309 @@
       "startDateTime": null,
       "endDateTime": null,
       "id": "eMMu9Wz"
+    },
+    {
+      "timeOffset": -39600,
+      "daylightSavingTime": true,
+      "startDateTime": 1634719500000,
+      "endDateTime": 1635716700000,
+      "id": "_anJAqU"
+    },
+    {
+      "timeOffset": -39600,
+      "daylightSavingTime": false,
+      "startDateTime": null,
+      "endDateTime": null,
+      "id": "4J7WW0Q"
+    },
+    {
+      "timeOffset": -39600,
+      "daylightSavingTime": false,
+      "startDateTime": null,
+      "endDateTime": null,
+      "id": "Lt16JkE"
+    },
+    {
+      "timeOffset": 46800,
+      "daylightSavingTime": true,
+      "startDateTime": 1633384800000,
+      "endDateTime": 1634248800000,
+      "id": "SXJ0PPG"
+    },
+    {
+      "timeOffset": 3600,
+      "daylightSavingTime": true,
+      "startDateTime": 1633251600000,
+      "endDateTime": 1636195500000,
+      "id": "9BnlJys"
+    },
+    {
+      "timeOffset": -36000,
+      "daylightSavingTime": true,
+      "startDateTime": 1633384800000,
+      "endDateTime": 1634853600000,
+      "id": "TYAK1TM"
+    },
+    {
+      "timeOffset": -36000,
+      "daylightSavingTime": true,
+      "startDateTime": 1633384800000,
+      "endDateTime": 1634853600000,
+      "id": "G0MhGr_"
+    },
+    {
+      "timeOffset": -10800,
+      "daylightSavingTime": true,
+      "startDateTime": 1633903200000,
+      "endDateTime": 1634335200000,
+      "id": "NWnBVDi"
+    },
+    {
+      "timeOffset": -18000,
+      "daylightSavingTime": true,
+      "startDateTime": 1634066100000,
+      "endDateTime": 1635449400000,
+      "id": "U2q_f8h"
+    },
+    {
+      "daylightSavingTime": true,
+      "startDateTime": 1633384800000,
+      "endDateTime": 1634853600000,
+      "id": "Yf6zoJn"
+    },
+    {
+      "timeOffset": -39600,
+      "daylightSavingTime": false,
+      "startDateTime": null,
+      "endDateTime": null,
+      "id": "6cvFryw"
+    },
+    {
+      "ntpOffset": -18000,
+      "ntpDSTenabled": true,
+      "ntpDSTstartDate": 1636479000000,
+      "ntpDSTendDate": 1638554400000,
+      "id": "Jlueolq"
+    },
+    {
+      "ntpDSTenabled": true,
+      "ntpDSTstartDate": 1636479000000,
+      "ntpDSTendDate": 1637864100000,
+      "id": "y5aKoya"
+    },
+    {
+      "ntpDSTenabled": true,
+      "ntpDSTstartDate": "1637257500000",
+      "ntpDSTendDate": "1637948700000",
+      "id": "vTebeJj"
+    },
+    {
+      "ntpOffset": -21600,
+      "ntpDSTenabled": true,
+      "ntpDSTstartDate": "1635787800000",
+      "ntpDSTendDate": "1637863200000",
+      "id": "0DQ3lCW"
+    },
+    {
+      "ntpOffset": -36000,
+      "ntpDSTenabled": true,
+      "ntpDSTstartDate": "1635728400000",
+      "ntpDSTendDate": "1638237600000",
+      "id": "sn7WVpK"
+    },
+    {
+      "ntpOffset": -36000,
+      "ntpDSTenabled": true,
+      "ntpDSTstartDate": "1636419600000",
+      "ntpDSTendDate": "1638237600000",
+      "id": "zZjMna3"
+    },
+    {
+      "ntpOffset": -36000,
+      "ntpDSTenabled": true,
+      "ntpDSTstartDate": "1636566300000",
+      "ntpDSTendDate": "1638469800000",
+      "id": "XM2mVDq"
+    },
+    {
+      "ntpOffset": -14400,
+      "ntpDSTenabled": true,
+      "ntpDSTstartDate": "1635698700000",
+      "ntpDSTendDate": "1636567200000",
+      "id": "I3_n7o6"
+    },
+    {
+      "ntpOffset": 3600,
+      "ntpDSTenabled": true,
+      "ntpDSTstartDate": "1616893200000",
+      "ntpDSTendDate": "1635645600000",
+      "id": "dI0f1Sf"
+    },
+    {
+      "ntpOffset": 3600,
+      "ntpDSTenabled": true,
+      "ntpDSTstartDate": "1616893200000",
+      "ntpDSTendDate": "1635645600000",
+      "id": "h7urqxq"
+    },
+    {
+      "ntpOffset": -14400,
+      "ntpDSTenabled": true,
+      "ntpDSTstartDate": "1635876000000",
+      "ntpDSTendDate": "1636568100000",
+      "id": "HLQnSb0"
+    },
+    {
+      "ntpOffset": -10800,
+      "ntpDSTenabled": true,
+      "ntpDSTstartDate": "1636481700000",
+      "ntpDSTendDate": "1637952300000",
+      "id": "bNZQX8y"
+    },
+    {
+      "ntpDSTenabled": true,
+      "ntpDSTstartDate": "1636412400000",
+      "ntpDSTendDate": "1636049700000",
+      "id": "VZKbjJe"
+    },
+    {
+      "ntpDSTenabled": true,
+      "ntpDSTstartDate": "1636568100000",
+      "ntpDSTendDate": "1636050600000",
+      "id": "Z4o0K06"
+    },
+    {
+      "ntpOffset": 3600,
+      "ntpDSTenabled": true,
+      "ntpDSTstartDate": "1636412400000",
+      "ntpDSTendDate": "1637190000000",
+      "id": "u9Kikaf"
+    },
+    {
+      "ntpDSTenabled": true,
+      "ntpDSTstartDate": "1635807600000",
+      "ntpDSTendDate": "1636585200000",
+      "id": "gT_CWkv"
+    },
+    {
+      "ntpOffset": -39600,
+      "ntpDSTenabled": true,
+      "ntpDSTstartDate": "1636482600000",
+      "ntpDSTendDate": "1638470700000",
+      "id": "MY_uNdu"
+    },
+    {
+      "ntpOffset": -43200,
+      "ntpDSTenabled": false,
+      "ntpDSTstartDate": "",
+      "ntpDSTendDate": "",
+      "id": "c9YSDrr"
+    },
+    {
+      "ntpDSTenabled": false,
+      "ntpDSTstartDate": "",
+      "ntpDSTendDate": "",
+      "id": "m_znGPX"
+    },
+    {
+      "ntpOffset": -36000,
+      "ntpDSTenabled": false,
+      "ntpDSTstartDate": "",
+      "ntpDSTendDate": "",
+      "id": "J8XEnBX"
+    },
+    {
+      "ntpOffset": -14400,
+      "ntpDSTenabled": true,
+      "ntpDSTstartDate": "1635792300000",
+      "ntpDSTendDate": "1636398000000",
+      "id": "7KBwWd1"
+    },
+    {
+      "ntpOffset": 7200,
+      "ntpDSTenabled": true,
+      "ntpDSTstartDate": "1635705000000",
+      "ntpDSTendDate": "1636572600000",
+      "id": "hPa0uad"
+    },
+    {
+      "ntpOffset": -14400,
+      "ntpDSTenabled": true,
+      "ntpDSTstartDate": "1635795000169",
+      "ntpDSTendDate": "1637264700000",
+      "id": "rr4rPhB"
+    },
+    {
+      "ntpOffset": -14400,
+      "ntpDSTenabled": true,
+      "ntpDSTstartDate": "1636573500000",
+      "ntpDSTendDate": "1637697600000",
+      "id": "XQNjC9X"
+    },
+    {
+      "ntpOffset": -10800,
+      "ntpDSTenabled": true,
+      "ntpDSTstartDate": "1636299900000",
+      "ntpDSTendDate": "1637770500000",
+      "id": "hBX0XKH"
+    },
+    {
+      "ntpOffset": -43200,
+      "ntpDSTenabled": true,
+      "ntpDSTstartDate": "1636564500000",
+      "ntpDSTendDate": "1636565400000",
+      "id": "yxqbNq3"
+    },
+    {
+      "ntpOffset": -39600,
+      "ntpDSTenabled": false,
+      "ntpDSTstartDate": "",
+      "ntpDSTendDate": "",
+      "id": "ydFJKfs"
+    },
+    {
+      "ntpOffset": -32400,
+      "ntpDSTenabled": false,
+      "ntpDSTstartDate": "",
+      "ntpDSTendDate": "",
+      "id": "5eywc1r"
+    }
+  ],
+  "Wifi": [
+    {
+      "wifiSSID": "äbcd",
+      "wifiPassword": "secret",
+      "id": 1
+    },
+    {
+      "id": 2
+    },
+    {
+      "id": 3
+    },
+    {
+      "wifiPassword": "123456789",
+      "id": 4
+    },
+    {
+      "wifiSSID": "abcd",
+      "wifiPassword": "12345678",
+      "id": 5
+    },
+    {
+      "wifiSSID": "brubs",
+      "wifiPassword": "marcel",
+      "id": 6
+    },
+    {
+      "wifiSSID": "abcdef",
+      "wifiPassword": "12345678",
+      "id": 7
+    },
+    {
+      "wifiSSID": "abcdef",
+      "wifiPassword": "12345678",
+      "id": 8
     }
   ]
 }

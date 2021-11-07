@@ -18,7 +18,7 @@ const TimeContainer = () => {
     }
 
     const [input, setInput] = useState(initialState.timeOffset);
-    const [error, setError] = useState("");
+    const [error, setError] = useState(false);
     const [checked, toggle] = useReducer((checked) => !checked, initialState.checked); //const [state, dispatch] = useReducer(reducer, initialState);
     const [startDateTime, setStartDateTime] = useState(initialState.startDateTime);
     const [endDateTime, setEndDateTime] = useState(initialState.endDateTime);
@@ -39,7 +39,7 @@ const TimeContainer = () => {
         console.log(date);
     };
 
-    const saveTimeConfig = () => {
+    const saveTimeConfig = async () => {
         let startTime = "";
         let endTime = "";
 
@@ -58,19 +58,11 @@ const TimeContainer = () => {
         };
     
 
-        TimeDataService.onSubmitTime(data)
-            .then(response => {
-                // setInput(initialState.timeOffset);
-                // setStartDateTime(initialState.startDateTime);
-                // setEndDateTime(initialState.endDateTime);
-
-                console.log(response.data);
-            })
-            .catch((e) => {
-                console.log(e.data);
-                setError(e.data);
-
-            });
+        const response = await TimeDataService.onSubmitTime(data);
+        console.log(response);
+        if(response !== "Created"){
+            setError(true);
+        }
         
     };
 
@@ -83,11 +75,11 @@ const TimeContainer = () => {
             <AppHeader />
 
             <Grid centered>
-                <Grid.Column style={{maxWidth: 550, marinTop: 20}}>
+                <Grid.Column style={{maxWidth: 550, marginTop: 20}}>
                     <Header textAlign='center'>Timezone Setup</Header>
                     <Segment>
                         <Form onSubmit={saveTimeConfig}> 
-                            {error && <Message header="Error" content={error} error/>}
+                            {error && <Message header="Something went wrong! :(" negative/>}
                             <Form.Field>
                                 <label>Timezone</label>
                                 <Form.Select 
@@ -140,7 +132,7 @@ const TimeContainer = () => {
                             <Button
                                  
                                 fluid
-                                color="teal" 
+                                color="orange" 
                                 type='submit'
                                 disabled={!submitFormValid || !input}
                             >Submit
