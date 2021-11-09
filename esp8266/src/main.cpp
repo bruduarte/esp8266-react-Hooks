@@ -9,16 +9,19 @@
 #include <RestApi.hpp>
 #include <ConfigManager.hpp>
 #include <TimeManager.hpp>
+#include <WiFiManager.hpp>
 
 const char* ssid     = "UPC7472663";          // The SSID (name) of the Wi-Fi network you want to connect to
 const char* password = "a6Qmsbhnwrdk";        // The password of the Wi-Fi network
 const char* ntpServer = "pool.ntp.org";       // default ntp server
 int ntpOffset = 0;                            // default ntp offset
 
+
 WiFiUDP wifiUDP;
 AsyncWebServer server(80);
 AsyncEventSource events("/events");
 ConfigManager configurationManager;
+WiFiManager wifiManager(&configurationManager);
 TimeManager timeManager(wifiUDP, ntpServer, ntpOffset);
 RestApi restApi(&server, &events, &configurationManager);
 
@@ -31,28 +34,6 @@ void setupESP(){
 	Serial.println("Setup ESP8266...\n");
 
 	SPIFFS.begin();  // Start the SPI Flash Files System
-
-	Serial.println("Done :) ...\n");
-}
-
-void setupWifi(){
-
-	Serial.println("Setup wifi...");
-	WiFi.begin(ssid, password);             // Connect to the network
-	Serial.print("\tConnecting to ");
-	Serial.print(ssid); 
-	Serial.print(" ...");
-
-	int i = 0;
-	while (WiFi.status() != WL_CONNECTED) { // Wait for the Wi-Fi to connect
-		delay(1000);
-		Serial.print(++i); 
-		Serial.print(' ');
-	}
-
-	Serial.println("\n\tConnection established!");  
-	Serial.print("\tIP address:\t");
-	Serial.println(WiFi.localIP());         // Send the IP address of the ESP8266 to the computer
 
 	Serial.println("Done :) ...\n");
 }
@@ -92,6 +73,11 @@ void setupConfig(){
 	Serial.println("Done :) ...");
 }
 
+
+void setupWifi(){
+	wifiManager.begin();
+	
+}
 
 
 void setup() {
@@ -139,9 +125,11 @@ void loopTime(){
 	if(configurationManager.getConfigStatus(TIMEMAN_CONFIG_NTP_OFFSET).equals(CONFIG_STATUS_CHANGED)){
 		// config has changed. Reload config and force update
 		
+		Serial.println("Time config changed");
 		ErrorType error = configurationManager.getConfig(&config, TIMEMAN_CONFIG_NTP_OFFSET);
 		if(error == RET_OK){
 			int offset = atoi(config.value.c_str());
+			Serial.printf("Set timeoffset to %d\n", offset);
 			timeManager.setTimeOffset(offset, true);  // force update
 			
 			printTime = true;
@@ -158,9 +146,22 @@ void loopTime(){
 	
 }
 
+void loopWifi(){
+	// chechk if connected
+	// check if config has changed and re-configure wifi
+
+
+	// if connected, then do nothing related to AP
+
+
+	// if not connected, then setup AP
+	struct station_config conf;
+    wifi_station_get_config(&conf);
+}
 
 void loop() { 
 
 	loopTime();
+	loopWifi();
 
 }
