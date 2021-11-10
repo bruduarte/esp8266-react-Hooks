@@ -125,7 +125,7 @@ void loopTime(){
 	if(configurationManager.getConfigStatus(TIMEMAN_CONFIG_NTP_OFFSET).equals(CONFIG_STATUS_CHANGED)){
 		// config has changed. Reload config and force update
 		
-		Serial.println("Time config changed");
+		Serial.println("Time config changed.");
 		ErrorType error = configurationManager.getConfig(&config, TIMEMAN_CONFIG_NTP_OFFSET);
 		if(error == RET_OK){
 			int offset = atoi(config.value.c_str());
@@ -148,15 +148,19 @@ void loopTime(){
 
 void loopWifi(){
 	// chechk if connected
+	bool connected = wifiManager.isConnected();
 	// check if config has changed and re-configure wifi
-
+	if(configurationManager.getConfigStatus(WIFIMAN_CONFIG_SSID).equals(CONFIG_STATUS_CHANGED)){
+		Serial.println("Wifi credentials changed.");
+		wifiManager.begin();
+	}
 
 	// if connected, then do nothing related to AP
-
-
 	// if not connected, then setup AP
-	struct station_config conf;
-    wifi_station_get_config(&conf);
+	if(!connected){
+		wifiManager.setupAccessPoint();
+	}
+
 }
 
 void loop() { 
