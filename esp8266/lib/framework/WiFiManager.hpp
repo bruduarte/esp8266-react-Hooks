@@ -24,11 +24,12 @@ class WiFiManager{
 		WiFiManager(ConfigManager* configurations);
 		bool begin();
 		bool startConnection();
-		void setupAccessPoint();
+		bool setupAccessPoint();
 		void updateCredentials(String& SSID, String& password);
 		IPAddress getIPaddress();
 		void setupMdns();
 		bool isConnected();
+		void disconnect();
 
 };
 

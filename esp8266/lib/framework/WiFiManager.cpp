@@ -39,30 +39,20 @@ bool WiFiManager::begin(){
 		if (getPass == RET_OK){
             Serial.println("Retrieved password!");
 			this->wifiPassword = config.value;
+            return true;
+
 		}else{
     		this->wifiPassword = "";
             Serial.printf("\tCould not get config %s.\n", WIFIMAN_CONFIG_PASSWORD);
-            setupAccessPoint();
             return false;
 		}
 	
   	}else{
           this->wifiSSID = "";
 		  Serial.printf("\tCould not get config %s.\n", WIFIMAN_CONFIG_SSID);
-          setupAccessPoint();
           return false;
 	}
     
-    
-    bool connected = startConnection();
-    if(!connected){
-        setupAccessPoint();
-        return false;
-    } else {
-        setupMdns();
-        return true;
-    }
-   
 }
 
 //functions that manages the connection to WiFi
@@ -83,7 +73,7 @@ bool WiFiManager::startConnection(){
 	        Serial.println(getIPaddress());  // Send the IP address of the ESP8266 to the computer
             return true;
         }
-        delay(500);
+        delay(1000);
         // Serial.println(WiFi.status());
     }
     Serial.println("Connection timed out. Please check your credentials.\n");
@@ -91,7 +81,7 @@ bool WiFiManager::startConnection(){
 }
 
 
-void WiFiManager::setupAccessPoint(){
+bool WiFiManager::setupAccessPoint(){
 
     Serial.println("Setting Access Point ... ");
     WiFi.hostname(WIFIMAN_HOST_NAME);
@@ -104,8 +94,11 @@ void WiFiManager::setupAccessPoint(){
             this->dnsServer = new DNSServer;
         }
         this->dnsServer->start(WIFIMAN_DNS_PORT, "*", WiFi.softAPIP());
+        MDNS.begin(WIFIMAN_HOST_NAME, WiFi.softAPIP());
+        return true;
     }else{
         Serial.println("Failed to setup access point.");
+        return false;
     }
     
 }
@@ -130,18 +123,16 @@ void WiFiManager::setupMdns() {
 }
 
 bool WiFiManager::isConnected(){
-     
-    for(int tries = 0; tries < 10; tries++){
-        if(WiFi.status() == WL_CONNECTED){
-            Serial.println("\n\tConnection established!");  
-	        Serial.print("\tIP address:\t");
-	        Serial.println(WiFi.localIP());  // Send the IP address of the ESP8266 to the computer
-            return true;
-        }
-        delay(500);
-        Serial.println(WiFi.status());
+    if(WiFi.status() == WL_CONNECTED){
+        Serial.println("\n\tConnection established!");  
+        return true;
+    }else{
+        Serial.println("Currently not connected to WiFi.\n");
+        return false;
     }
-    Serial.println("Connection timed out. Please check your credentials.\n");
-    return false;
+    
+}
 
+void WiFiManager::disconnect(){
+    WiFi.disconnect();
 }

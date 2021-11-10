@@ -15,7 +15,9 @@ RestApi::RestApi(AsyncWebServer* server, AsyncEventSource* events, ConfigManager
         request->send(200, "text/plain", String(ESP.getFreeHeap()));
     });
 
-   
+    server->on("/", HTTP_GET, [](AsyncWebServerRequest *request){
+        request->send(200, "text/plain", "Hello ESP8266!");
+    });
    /**
      * Configuration API
      * */  

@@ -26,6 +26,9 @@ TimeManager timeManager(wifiUDP, ntpServer, ntpOffset);
 RestApi restApi(&server, &events, &configurationManager);
 
 bool printTime = true;
+bool APMode = false;
+enum class WifiStates {LOADING_CONFIGS, CHECK_STATUS, STARTING_CONNECTION, START_AP, WAIT_CHANGE};
+WifiStates state = WifiStates::LOADING_CONFIGS;
 
 void setupESP(){
 
@@ -76,6 +79,7 @@ void setupConfig(){
 
 void setupWifi(){
 	wifiManager.begin();
+
 	
 }
 
@@ -147,19 +151,67 @@ void loopTime(){
 }
 
 void loopWifi(){
-	// chechk if connected
-	bool connected = wifiManager.isConnected();
-	// check if config has changed and re-configure wifi
-	if(configurationManager.getConfigStatus(WIFIMAN_CONFIG_SSID).equals(CONFIG_STATUS_CHANGED)){
-		Serial.println("Wifi credentials changed.");
+	switch (state)
+	{
+	case WifiStates::LOADING_CONFIGS :
+		Serial.println("Loading wifi credentials...\n");
 		wifiManager.begin();
-	}
+		state = WifiStates::CHECK_STATUS;
+		break;
 
-	// if connected, then do nothing related to AP
-	// if not connected, then setup AP
-	if(!connected){
-		wifiManager.setupAccessPoint();
+	case WifiStates::CHECK_STATUS:
+		Serial.println("Checking wifi status...\n");
+		if(wifiManager.isConnected()){
+			state = WifiStates::WAIT_CHANGE;
+		}else{
+			state = WifiStates::STARTING_CONNECTION;
+		}
+		break;
+
+	case WifiStates::STARTING_CONNECTION:
+		if(wifiManager.startConnection()){
+			state = WifiStates::WAIT_CHANGE;
+		}else{
+			state = WifiStates::START_AP;
+		}
+		break;
+
+	case WifiStates::START_AP:
+		if(wifiManager.setupAccessPoint()){
+			APMode = true;
+			state = WifiStates::WAIT_CHANGE;
+		}
+
+		break;
+
+	case WifiStates::WAIT_CHANGE:
+
+		Serial.println("...\n");
+		if(configurationManager.getConfigStatus(WIFIMAN_CONFIG_SSID).equals(CONFIG_STATUS_CHANGED) || configurationManager.getConfigStatus(WIFIMAN_CONFIG_PASSWORD).equals(CONFIG_STATUS_CHANGED)){
+
+			Serial.println("Wifi credentials changed.");
+			configurationManager.updateConfigStatus(WIFIMAN_CONFIG_SSID, "ok");
+			configurationManager.updateConfigStatus(WIFIMAN_CONFIG_PASSWORD, "ok");
+			wifiManager.disconnect();
+			state = WifiStates::LOADING_CONFIGS;
+
+		}
+		else if(APMode){
+			state = WifiStates::WAIT_CHANGE;
+		}
+		else if(!wifiManager.isConnected()){
+			state = WifiStates::LOADING_CONFIGS;
+		}else {
+			//Just wait...
+		}
+
+		break;
+	
+	default:
+		state = WifiStates::LOADING_CONFIGS;
+		break;
 	}
+	
 
 }
 
