@@ -1,7 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Button, Icon, Menu } from 'semantic-ui-react';
-import { GiCircuitry } from "react-icons/gi";
+import { GiCircuitry} from "react-icons/gi";
+
 
 const AppHeader = () => {
     return (
@@ -19,6 +20,13 @@ const AppHeader = () => {
                 <Button as={Link} to="/time" basic icon color="orange">
                     <Icon name="clock outline"></Icon>
                     Time Setup
+                </Button>
+            </Menu.Item>
+            <Menu.Item>
+                {" "}
+                <Button as={Link} to="/custompage" basic icon color="purple">
+                    <Icon name="paper plane outline"></Icon>
+                    Custom Page
                 </Button>
             </Menu.Item>
         </Menu>
