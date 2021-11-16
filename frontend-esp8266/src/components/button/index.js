@@ -1,21 +1,24 @@
 import React from 'react';
-import {Button, Grid, Segment} from 'semantic-ui-react';
+import {Button, Grid, Segment, Form} from 'semantic-ui-react';
 
 
 
 const CustomButton = ({children, onClick}) => {
     return (
-        <Grid centered columns='equal' >
-
+        <Grid centered >
                 <Grid.Column> 
                     <Segment>
-                        <Button
-                            basic
-                            onClick={onClick}
-                            color="pink"    
-                        >
-                        {children}
-                        </Button>
+                        <Form>
+                            <Form.Field>    
+                                <Button
+                                    basic
+                                    onClick={onClick}
+                                    color="pink"    
+                                    >
+                                {children}
+                                </Button>
+                            </Form.Field>
+                        </Form>
                     </Segment>
                 </Grid.Column> 
 

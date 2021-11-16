@@ -3,7 +3,7 @@ import AppHeader from '../../components/header';
 import CustomButton from '../../components/button';
 import CustomDataService from '../../services/dataService';
 import CustomInput from "../../components/input";
-import { Grid } from "semantic-ui-react";
+import CustomCheckbox from "../../components/checkbox";
 
 
 const CustomContainer = () => {
@@ -38,7 +38,11 @@ const CustomContainer = () => {
                                                             type={pageItem.inputType}
                                                         /> :
                             pageItem.type === 'button' ? <CustomButton onClick = {pageItem.onClick} >{pageItem.name}</CustomButton> : 
-                            pageItem.type === 'checkbox' ? <p>{pageItem.name}</p> : <>Nada</>
+                            pageItem.type === 'checkbox' ? <CustomCheckbox  name={pageItem.name} 
+                                                                            label={pageItem.label}
+                                                                            type={pageItem.type}
+                                                                            defaultChecked={pageItem.defaultChecked}
+                                                            /> : <>Nada</>
 
                         );
                     }, this)

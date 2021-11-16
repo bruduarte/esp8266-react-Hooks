@@ -46,8 +46,8 @@ const getCustom = async () => {
                 },
                 {
                     "name": "Checkbox1",
-                    "onClick": "alert",
-                    "type": "checkbox"
+                    "label": "toggle",
+                    "type": "checkbox",
                 }
             
              ]
