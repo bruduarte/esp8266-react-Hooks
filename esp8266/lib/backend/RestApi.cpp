@@ -18,6 +18,8 @@ RestApi::RestApi(AsyncWebServer* server, AsyncEventSource* events, ConfigManager
     server->on("/", HTTP_GET, [](AsyncWebServerRequest *request){
         request->send(200, "text/plain", "Hello ESP8266!");
     });
+
+    
    /**
      * Configuration API
      * */  
@@ -29,6 +31,33 @@ RestApi::RestApi(AsyncWebServer* server, AsyncEventSource* events, ConfigManager
     server->on("/config/list", HTTP_GET, [configurationManager](AsyncWebServerRequest *request){
         String list = configurationManager->getAllConfig();
         request->send(200, "application/json", list);
+    });
+
+    /**
+     * Custom page API
+    */
+    server->on("/custompage", HTTP_GET, [](AsyncWebServerRequest *request){
+        String customConfig = "[ \
+        {\
+            \"name\": \"Button1\",\
+            \"type\": \"button\"\
+        },\
+        {\
+            \"name\": \"Button2\",\
+            \"type\": \"button\"\
+        }\
+    ]";
+        request->send(200, "application/json", customConfig);
+    });
+
+    server->on("/button", HTTP_POST, [](AsyncWebServerRequest *request){
+        // get the button identification
+
+        // get the registered funtion
+
+        // execute it
+
+        request->send(200, "application/json", "");
     });
 
     /**
@@ -102,3 +131,6 @@ RestApi::~RestApi() {};
 
 
 
+void RestApi::registerFunction(void (*f)(), String buttonName){
+
+}
