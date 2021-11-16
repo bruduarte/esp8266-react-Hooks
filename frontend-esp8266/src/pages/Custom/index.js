@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import AppHeader from '../../components/header';
 import CustomButton from '../../components/button';
 import CustomDataService from '../../services/dataService';
+import CustomInput from "../../components/input";
 import { Grid } from "semantic-ui-react";
 
 
@@ -30,8 +31,13 @@ const CustomContainer = () => {
                 {
                     data && data.length > 0 && data.map((pageItem) => {
                         return (
+                            pageItem.type === 'input' ? <CustomInput
+                                                            placeholder={pageItem.placeholder}
+                                                            name={pageItem.name} 
+                                                            label={pageItem.name} 
+                                                            type={pageItem.inputType}
+                                                        /> :
                             pageItem.type === 'button' ? <CustomButton onClick = {pageItem.onClick} >{pageItem.name}</CustomButton> : 
-                            pageItem.type === 'input' ? <p>{pageItem.name}</p> : 
                             pageItem.type === 'checkbox' ? <p>{pageItem.name}</p> : <>Nada</>
 
                         );

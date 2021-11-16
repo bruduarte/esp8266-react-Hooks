@@ -13,6 +13,52 @@ const getTime = async () => {
     // return axiosInstance.get("/Timezone");
 };
 
+const getCustom = async () => {
+    try{
+        // const response = await axiosInstance.get("/pageDescriptor");
+        // console.log(response);
+        let test = [
+                 {
+                     "name": "Button1",
+                     "onClick": "submit",
+                     "type": "button"
+                 },
+                 {
+                    "name": "Iput1",
+                    "placeholder":"Input1",
+                    "onChange": "alert",
+                    "inputType": "text",
+                    "type": "input",
+                    "handleChange": ""
+                },
+                 {
+                     "name": "Button2",
+                     "onClick": "/toggle",
+                     "type": "button"
+                 },
+                 {
+                    "name": "Iput2",
+                    "placeholder":"Input2",
+                    "onChange": "alert",
+                    "inputType": "text",
+                    "type": "input",
+                    "handleChange": ""
+                },
+                {
+                    "name": "Checkbox1",
+                    "onClick": "alert",
+                    "type": "checkbox"
+                }
+            
+             ]
+         
+        return test;
+    }
+    catch(e){
+        console.error(e);
+    }
+}
+
 const onSubmitTime = async (data) => {
     try{
         //"/config/update"
@@ -40,4 +86,4 @@ const onSubmitCredentials = async (data) => {
 
 
 
-export default {getTime, onSubmitTime, onSubmitCredentials};
+export default {getTime, onSubmitTime, onSubmitCredentials, getCustom};
