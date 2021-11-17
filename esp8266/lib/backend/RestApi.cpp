@@ -36,8 +36,9 @@ RestApi::RestApi(AsyncWebServer* server, AsyncEventSource* events, ConfigManager
     /**
      * Custom page API
     */
-    server->on("/custompage", HTTP_GET, [](AsyncWebServerRequest *request){
-        String customConfig = "[ \
+    server->on("/custompage", HTTP_GET, [this](AsyncWebServerRequest *request){
+        
+     /*   String customConfig = "[ \
         {\
             \"name\": \"Button1\",\
             \"type\": \"button\"\
@@ -46,7 +47,9 @@ RestApi::RestApi(AsyncWebServer* server, AsyncEventSource* events, ConfigManager
             \"name\": \"Button2\",\
             \"type\": \"button\"\
         }\
-    ]";
+    ]";*/
+
+        String customConfig = customPageObjects();
         request->send(200, "application/json", customConfig);
     });
 
@@ -131,6 +134,36 @@ RestApi::~RestApi() {};
 
 
 
-void RestApi::registerFunction(void (*f)(), String buttonName){
+void RestApi::registerButton(void (*function)(), String buttonName){
 
+    if(function != NULL && !buttonName.isEmpty() && buttonsCounter < MAX_CUSTOM_BUTTONS){
+       
+        this->buttons[buttonsCounter].buttonName = buttonName;
+        this->buttons[buttonsCounter].function = function;
+
+        // Serial.println(this->buttons[buttonsCounter].buttonName);
+        // Serial.println("\n");
+        this->buttonsCounter++;
+    } 
+    // Serial.println("Button registered! \n");
+
+}
+
+
+String RestApi::customPageObjects(){
+    String pageObjects;
+    StaticJsonDocument<200> doc;
+    StaticJsonDocument<50> page;
+    JsonArray pageObjectsJson = doc.to<JsonArray>();
+    
+    for (int i = 0; i < this->buttonsCounter; i++){
+        JsonObject object = page.to<JsonObject>();
+        object["name"] = this->buttons[i].buttonName;
+        object["type"] = "button";
+        pageObjectsJson.add(object);
+    }
+    
+    serializeJson(pageObjectsJson, pageObjects);
+    
+    return pageObjects;
 }

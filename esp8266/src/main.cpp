@@ -16,6 +16,7 @@ const char* password = "a6Qmsbhnwrdk";        // The password of the Wi-Fi netwo
 const char* ntpServer = "pool.ntp.org";       // default ntp server
 int ntpOffset = 0;                            // default ntp offset
 
+//create a global String variable -> that will tell my library how the page should look like.
 
 WiFiUDP wifiUDP;
 AsyncWebServer server(80);
@@ -29,6 +30,11 @@ bool printTime = true;
 bool APMode = false;
 enum class WifiStates {LOADING_CONFIGS, CHECK_STATUS, STARTING_CONNECTION, START_AP, WAIT_CHANGE};
 WifiStates state = WifiStates::LOADING_CONFIGS;
+String pageObjects;
+
+void testeIdeiaGenio () {
+	Serial.println("Hola! Que Tal?");
+}
 
 void setupESP(){
 
@@ -91,6 +97,12 @@ void setup() {
   	setupWifi();
   	setupWebServer();
 	setupTime();
+
+	restApi.registerButton(testeIdeiaGenio, "testeIdea");
+	restApi.registerButton(testeIdeiaGenio, "testeIdea2");
+	restApi.registerButton(testeIdeiaGenio, "testeIdea3");
+	pageObjects = restApi.customPageObjects();
+	Serial.println(pageObjects);
 
 }
 
@@ -221,3 +233,4 @@ void loop() {
 	loopWifi();
 
 }
+
