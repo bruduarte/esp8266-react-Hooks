@@ -37,7 +37,7 @@ RestApi::RestApi(AsyncWebServer* server, AsyncEventSource* events, ConfigManager
      * Custom page API
     */
     server->on("/custompage", HTTP_GET, [this](AsyncWebServerRequest *request){
-        
+
      /*   String customConfig = "[ \
         {\
             \"name\": \"Button1\",\
@@ -52,16 +52,37 @@ RestApi::RestApi(AsyncWebServer* server, AsyncEventSource* events, ConfigManager
         String customConfig = customPageObjects();
         request->send(200, "application/json", customConfig);
     });
-
-    server->on("/button", HTTP_POST, [](AsyncWebServerRequest *request){
+    
+    /**
+     * Function call after a button is clicked on the frontend
+    */
+    server->on("/button", HTTP_POST, [](AsyncWebServerRequest * request){}, NULL, [this](AsyncWebServerRequest * request, uint8_t *data, size_t len, size_t index, size_t total) {
+ 
+      
         // get the button identification
+        // Serial.println(len);
+        data[len]='\0';
+        String buttonID (reinterpret_cast<const char*>(data));
+        Serial.println(buttonID);
 
-        // get the registered funtion
+        // get the registered funtion for the clicked button
+        void (*function)();
+        function = getButtonFunction(buttonID);
+        
 
         // execute it
+        if(function != NULL){
+            function();
+
+        }else{
+            Serial.println("Function returned null");
+
+        }
 
         request->send(200, "application/json", "");
-    });
+  });
+
+
 
     /**
      * UPDATE
@@ -167,3 +188,15 @@ String RestApi::customPageObjects(){
     
     return pageObjects;
 }
+
+buttonFunction RestApi::getButtonFunction(String buttonName){
+    if(!buttonName.isEmpty()){
+        for (int i = 0; i < MAX_CUSTOM_BUTTONS; i++){
+           if(this->buttons[i].buttonName == buttonName){
+               return this->buttons[i].function;
+           }
+        }
+        Serial.println("Ops... Button - Function not found!\n");
+    }
+        return NULL;
+} 

@@ -10,6 +10,8 @@
 #include <ConfigManager.hpp>
 #define MAX_CUSTOM_BUTTONS      10
 
+typedef void (*buttonFunction)();
+
 //struct to track custom buttons to the function
 typedef struct ButtonFunctions_t{
     void (*function)();
@@ -26,9 +28,10 @@ class RestApi {
         RestApi(AsyncWebServer* server, AsyncEventSource* events, ConfigManager *configurationManager);
         ~RestApi();
         void registerButton(void (*function)(), String buttonName); //receives a void function without args
-        // void registerInput(void (*function)(), String inputName);
-        // void registerCheckbox(bool* variable, String checkBoxName);
+
+
         String customPageObjects ();
+        buttonFunction getButtonFunction(String buttonName); 
 
     protected:
 };
