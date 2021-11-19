@@ -30,7 +30,8 @@ bool printTime = true;
 bool APMode = false;
 enum class WifiStates {LOADING_CONFIGS, CHECK_STATUS, STARTING_CONNECTION, START_AP, WAIT_CHANGE};
 WifiStates state = WifiStates::LOADING_CONFIGS;
-String pageObjects;
+size_t capacity = 300;
+char* pageObjects = new char[capacity];
 
 void testeIdeiaGenio () {
 	Serial.println("Hola! Que Tal?");
@@ -101,8 +102,11 @@ void setup() {
 	restApi.registerButton(testeIdeiaGenio, "testeIdea");
 	restApi.registerButton(testeIdeiaGenio, "testeIdea2");
 	restApi.registerButton(testeIdeiaGenio, "testeIdea3");
-	pageObjects = restApi.customPageObjects();
-	Serial.println(pageObjects);
+	// ErrorType error = restApi.customPageObjects(pageObjects, capacity);
+	// if(error == RET_OK){
+
+	// 	Serial.println(pageObjects);
+	// }
 
 }
 

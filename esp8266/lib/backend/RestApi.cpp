@@ -48,38 +48,54 @@ RestApi::RestApi(AsyncWebServer* server, AsyncEventSource* events, ConfigManager
             \"type\": \"button\"\
         }\
     ]";*/
+        size_t capacity = 500;
+        char* customConfig = new char[capacity];
+        ErrorType error = customPageObjects(customConfig, capacity);
 
-        String customConfig = customPageObjects();
-        request->send(200, "application/json", customConfig);
+        if(error == RET_OK){
+            Serial.println(customConfig);
+            request->send(200, "application/json", customConfig);
+        }else{
+            request->send(507, "application/json", "Capacity of char* array is not sufficient.");
+        }
+        delete[] customConfig;
+
     });
     
     /**
+     * 
      * Function call after a button is clicked on the frontend
+     * 
     */
     server->on("/button", HTTP_POST, [](AsyncWebServerRequest * request){}, NULL, [this](AsyncWebServerRequest * request, uint8_t *data, size_t len, size_t index, size_t total) {
  
       
         // get the button identification
-        // Serial.println(len);
         data[len]='\0';
-        String buttonID (reinterpret_cast<const char*>(data));
-        Serial.println(buttonID);
+        char* buttonName = new char [len];
+        strcpy(buttonName, reinterpret_cast<const char*>(data));
+        Serial.println(buttonName);
+
+        buttonName = strtok(buttonName, "\"");
+       
+        Serial.println(buttonName);
+        
 
         // get the registered funtion for the clicked button
         void (*function)();
-        function = getButtonFunction(buttonID);
+        function = getButtonFunction(buttonName);
         
-
+        delete [] buttonName;
         // execute it
         if(function != NULL){
             function();
+            request->send(200, "application/json", "");
 
         }else{
             Serial.println("Function returned null");
-
+            request->send(501, "text/plain", "Function not implemented!");
         }
 
-        request->send(200, "application/json", "");
   });
 
 
@@ -155,45 +171,65 @@ RestApi::~RestApi() {};
 
 
 
-void RestApi::registerButton(void (*function)(), String buttonName){
+void RestApi::registerButton(void (*function)(), const char* buttonName){
 
-    if(function != NULL && !buttonName.isEmpty() && buttonsCounter < MAX_CUSTOM_BUTTONS){
+    if(function != NULL && strlen(buttonName) > 0 && componentsCounter < MAX_PAGE_COMPONENTS){
+        
+        size_t characters = MAX_PAGE_COMPONENTS < strlen(buttonName) ? MAX_PAGE_COMPONENTS : strlen(buttonName);
        
-        this->buttons[buttonsCounter].buttonName = buttonName;
-        this->buttons[buttonsCounter].function = function;
+        Button* button = new Button;
+        button->function = function;
+        button->type = TYPE_BUTTON;
 
-        // Serial.println(this->buttons[buttonsCounter].buttonName);
-        // Serial.println("\n");
-        this->buttonsCounter++;
+        Serial.println(characters);
+        
+        strncpy(button->name, buttonName, characters);
+        button->name[characters] = '\0';
+
+        this->pageComponents[componentsCounter] = button;
+    
+        Serial.println(button->name);
+        Serial.println("\n");
+        this->componentsCounter++;
     } 
-    // Serial.println("Button registered! \n");
+    Serial.println("Button registered! \n");
 
 }
 
 
-String RestApi::customPageObjects(){
-    String pageObjects;
+ErrorType RestApi::customPageObjects(char* pageObjects, size_t capacity){
     StaticJsonDocument<200> doc;
     StaticJsonDocument<50> page;
-    JsonArray pageObjectsJson = doc.to<JsonArray>();
+    JsonArray objectsJson = doc.to<JsonArray>();
     
-    for (int i = 0; i < this->buttonsCounter; i++){
-        JsonObject object = page.to<JsonObject>();
-        object["name"] = this->buttons[i].buttonName;
-        object["type"] = "button";
-        pageObjectsJson.add(object);
+    for (int i = 0; i < this->componentsCounter; i++){
+        if(this->pageComponents[i]->type == TYPE_BUTTON){
+            JsonObject object = page.to<JsonObject>();
+            object["name"] = (const char*)this->pageComponents[i]->name;
+            object["type"] = "button";
+            objectsJson.add(object);
+            // Serial.println("Object added!");
+
+        }
     }
+
+    // serializeJson(objectsJson, Serial);
+    size_t characters = serializeJson(objectsJson, pageObjects, capacity);
     
-    serializeJson(pageObjectsJson, pageObjects);
     
-    return pageObjects;
+    if(characters >= capacity){
+        return RET_WARNING;
+    }
+
+    return RET_OK;
+
 }
 
-buttonFunction RestApi::getButtonFunction(String buttonName){
-    if(!buttonName.isEmpty()){
-        for (int i = 0; i < MAX_CUSTOM_BUTTONS; i++){
-           if(this->buttons[i].buttonName == buttonName){
-               return this->buttons[i].function;
+buttonFunction RestApi::getButtonFunction(const char* buttonName){
+    if(strlen(buttonName) > 0){
+        for (int i = 0; i < this->componentsCounter; i++){
+           if(strcmp(this->pageComponents[i]->name, buttonName) == 0 && this->pageComponents[i]->type == TYPE_BUTTON) {
+               return ((Button*)this->pageComponents[i])->function;
            }
         }
         Serial.println("Ops... Button - Function not found!\n");

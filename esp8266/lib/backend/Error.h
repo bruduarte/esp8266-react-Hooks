@@ -3,8 +3,9 @@
 
 typedef unsigned int ErrorType;
 
-#define RET_OK    (0)
-#define RET_NOK   (1)
+#define RET_OK      (0)
+#define RET_NOK     (1)
+#define RET_WARNING (2)
 
 // errors for ConfigManager
 #define ERR_OPEN_CONFIG_FILE                    (0X1000)
