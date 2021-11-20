@@ -12,7 +12,6 @@ const CustomContainer = () => {
     
     const getCustomData = () => {
         CustomDataService.getCustom().then(res => setData(res));
-        // setData(test);
 
     }
     
@@ -34,10 +33,10 @@ const CustomContainer = () => {
                             pageItem.type === 'input' ? <CustomInput
                                                             placeholder={pageItem.placeholder}
                                                             name={pageItem.name} 
-                                                            label={pageItem.name} 
+                                                            label={pageItem.label} 
                                                             type={pageItem.inputType}
                                                         /> :
-                            pageItem.type === 'button' ? <CustomButton onClick = {pageItem.onClick} >{pageItem.name}</CustomButton> : 
+                            pageItem.type === 'button' ? <CustomButton >{pageItem.name}</CustomButton> : 
                             pageItem.type === 'checkbox' ? <CustomCheckbox  name={pageItem.name} 
                                                                             label={pageItem.label}
                                                                             type={pageItem.type}

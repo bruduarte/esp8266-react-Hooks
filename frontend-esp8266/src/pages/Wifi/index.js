@@ -32,6 +32,8 @@ const WifiContainer = () => {
         console.log(response);
         if(response !== "Created"){
             setError(true);
+        }else{
+            setError(false);
         }
     };
 
