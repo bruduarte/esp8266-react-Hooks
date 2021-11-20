@@ -152,7 +152,7 @@ RestApi::RestApi(AsyncWebServer* server, AsyncEventSource* events, ConfigManager
     */
     server->on("/inputbox", HTTP_POST, [](AsyncWebServerRequest * request){}, NULL, [this](AsyncWebServerRequest * request, uint8_t *data, size_t len, size_t index, size_t total) {
         
-        //it will send: "name inputValue"
+        //it will send: "iputName inputValue"
       
         // get the inputbox identification
         data[len]='\0';
@@ -189,7 +189,7 @@ RestApi::RestApi(AsyncWebServer* server, AsyncEventSource* events, ConfigManager
                         size = strlen(inputSplit);
                         size_t characters = (MAX_INPUT_SIZE - 1) < size ?  (MAX_INPUT_SIZE - 1) : size;
                         strncpy((char*)inputVariable, inputSplit, characters);
-                        ((char*)inputVariable)[characters+1] = '\0';
+                        ((char*)inputVariable)[characters] = '\0';
 
                         request->send(200, "application/json", "");
 
@@ -213,19 +213,20 @@ RestApi::RestApi(AsyncWebServer* server, AsyncEventSource* events, ConfigManager
     */
     server->on("/checkbox", HTTP_POST, [](AsyncWebServerRequest * request){}, NULL, [this](AsyncWebServerRequest * request, uint8_t *data, size_t len, size_t index, size_t total) {
         
-        //it will send: "name checkboxValue"
+        //it will send: "checkboxName checkboxValue"
       
         // get the checkbox identification
+        
         data[len]='\0';
         char* checkbox = new char [len];
         strcpy(checkbox, reinterpret_cast<const char*>(data));
-        // Serial.println(checkbox);
+        Serial.println(checkbox);
 
         char* checkboxSplit = strtok(checkbox, "\" ");
         size_t size = strlen(checkboxSplit);
 
-        // Serial.println(checkboxSplit);
-        // Serial.println(size);
+        Serial.println(checkboxSplit);
+        Serial.println(size);
 
         char* checkboxName = new char[size+1];
         strncpy(checkboxName, checkboxSplit, size);
@@ -250,8 +251,10 @@ RestApi::RestApi(AsyncWebServer* server, AsyncEventSource* events, ConfigManager
                         // assign value
                         if(strcmp(checkboxSplit, "true") == 0){
                             *checkboxVariable = true;
+                            Serial.println("True!");
                         }else{
                             *checkboxVariable = false;
+                            Serial.println("False!");
                         }
                         request->send(200, "application/json", "");
 
