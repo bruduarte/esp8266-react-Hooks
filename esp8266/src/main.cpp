@@ -16,7 +16,7 @@ const char* password = "a6Qmsbhnwrdk";        // The password of the Wi-Fi netwo
 const char* ntpServer = "pool.ntp.org";       // default ntp server
 int ntpOffset = 0;                            // default ntp offset
 
-//create a global String variable -> that will tell my library how the page should look like.
+
 
 WiFiUDP wifiUDP;
 AsyncWebServer server(80);
@@ -30,8 +30,9 @@ bool printTime = true;
 bool APMode = false;
 enum class WifiStates {LOADING_CONFIGS, CHECK_STATUS, STARTING_CONNECTION, START_AP, WAIT_CHANGE};
 WifiStates state = WifiStates::LOADING_CONFIGS;
-size_t capacity = 300;
-char* pageObjects = new char[capacity];
+
+char input[MAX_INPUT_SIZE];
+bool toggle;
 
 void testeIdeiaGenio () {
 	Serial.println("Hola! Que Tal?");
@@ -100,13 +101,11 @@ void setup() {
 	setupTime();
 
 	restApi.registerButton(testeIdeiaGenio, "testeIdea");
+	restApi.registerInput(&input, "name", "placeholder", "label", "text");
 	restApi.registerButton(testeIdeiaGenio, "testeIdea2");
+	restApi.registerCheckbox(&toggle, "toggleLED", "On/Off");
 	restApi.registerButton(testeIdeiaGenio, "testeIdea3");
-	// ErrorType error = restApi.customPageObjects(pageObjects, capacity);
-	// if(error == RET_OK){
-
-	// 	Serial.println(pageObjects);
-	// }
+	
 
 }
 
@@ -235,6 +234,6 @@ void loop() {
 
 	loopTime();
 	loopWifi();
-
-}
+	Serial.println(input);
+}	
 

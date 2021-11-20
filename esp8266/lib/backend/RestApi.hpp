@@ -16,6 +16,7 @@
 #define MAX_INPUT_PLACEHOLDER   50
 #define MAX_INPUT_LABEL         50
 #define MAX_INPUT_TYPE          20
+#define MAX_INPUT_SIZE          50
 
 
 typedef void (*buttonFunction)();
@@ -27,14 +28,14 @@ typedef struct ButtonFunctions_t{
 
 }ButtonFucntions;
 
-enum inputTypes_t {
-    TYPE_INT,
-    TYPE_FLOAT,
-    TYPE_CHAR,
-    TYPE_STRING,
-    TYPE_BOOL
+// enum inputTypes_t {
+//     TYPE_INT,
+//     TYPE_FLOAT,
+//     TYPE_CHAR,
+//     TYPE_STRING,
+//     TYPE_BOOL
 
-};
+// };
 
 enum componentType_t {
     TYPE_BUTTON,
@@ -56,11 +57,11 @@ class Button: public Components {
 
 class Input: public Components {
     public:
-        char placeholder[MAX_INPUT_PLACEHOLDER];
-        char label[MAX_INPUT_LABEL];
-        char type[MAX_INPUT_TYPE];
+        char placeholder[MAX_INPUT_PLACEHOLDER + 1];
+        char label[MAX_INPUT_LABEL + 1];
+        char httpInputType[MAX_INPUT_TYPE + 1];
         void* variable;
-        inputTypes_t inputType;
+        // inputTypes_t inputType;
 
 
 };
@@ -68,6 +69,7 @@ class Input: public Components {
 class Checkbox: public Components {
     public:
         char label[MAX_INPUT_LABEL];
+        bool* variable;
 };
 
 class RestApi {
@@ -80,10 +82,13 @@ class RestApi {
         RestApi(AsyncWebServer* server, AsyncEventSource* events, ConfigManager *configurationManager);
         ~RestApi();
         void registerButton(void (*function)(), const char* buttonName); //receives a void function without args
+        void registerInput(void* variable, const char* inputName, const char* placeholder, const char* label, const char* httpInputType);
+        void registerCheckbox(bool* variable, const char* name, const char* label);
 
 
         ErrorType customPageObjects (char* pageObjects, size_t capacity);
         buttonFunction getButtonFunction(const char* buttonName); 
+        void* getIputVariable(const char* inputName);
 
     protected:
 };
