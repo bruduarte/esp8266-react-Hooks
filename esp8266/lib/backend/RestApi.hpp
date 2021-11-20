@@ -89,6 +89,7 @@ class RestApi {
         ErrorType customPageObjects (char* pageObjects, size_t capacity);
         buttonFunction getButtonFunction(const char* buttonName); 
         void* getIputVariable(const char* inputName);
+        bool* getCheckboxVariable(const char* checkboxName);
 
     protected:
 };

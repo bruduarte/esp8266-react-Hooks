@@ -114,7 +114,7 @@ RestApi::RestApi(AsyncWebServer* server, AsyncEventSource* events, ConfigManager
     });
     
     /**
-     * Function call after a button is clicked on the frontend
+     * Function call after a button is clicked on the client
     */
     server->on("/button", HTTP_POST, [](AsyncWebServerRequest * request){}, NULL, [this](AsyncWebServerRequest * request, uint8_t *data, size_t len, size_t index, size_t total) {
  
@@ -148,7 +148,7 @@ RestApi::RestApi(AsyncWebServer* server, AsyncEventSource* events, ConfigManager
   });
 
     /**
-     * Function call after a inputbox content is sent from the frontend
+     * Function call after a inputbox content is sent from the client
     */
     server->on("/inputbox", HTTP_POST, [](AsyncWebServerRequest * request){}, NULL, [this](AsyncWebServerRequest * request, uint8_t *data, size_t len, size_t index, size_t total) {
         
@@ -168,7 +168,7 @@ RestApi::RestApi(AsyncWebServer* server, AsyncEventSource* events, ConfigManager
 
         char* inputName = new char[size+1];
         strncpy(inputName, inputSplit, size);
-        inputName[size+1] = '\0';
+        inputName[size] = '\0';
         // Serial.println(inputName);
 
         if(strlen(inputName) > 0){
@@ -205,6 +205,68 @@ RestApi::RestApi(AsyncWebServer* server, AsyncEventSource* events, ConfigManager
         }
         delete [] input;
         delete [] inputName;
+  });
+
+
+    /**
+     * Function call after a checkbox is toggled on the client
+    */
+    server->on("/checkbox", HTTP_POST, [](AsyncWebServerRequest * request){}, NULL, [this](AsyncWebServerRequest * request, uint8_t *data, size_t len, size_t index, size_t total) {
+        
+        //it will send: "name checkboxValue"
+      
+        // get the checkbox identification
+        data[len]='\0';
+        char* checkbox = new char [len];
+        strcpy(checkbox, reinterpret_cast<const char*>(data));
+        // Serial.println(checkbox);
+
+        char* checkboxSplit = strtok(checkbox, "\" ");
+        size_t size = strlen(checkboxSplit);
+
+        // Serial.println(checkboxSplit);
+        // Serial.println(size);
+
+        char* checkboxName = new char[size+1];
+        strncpy(checkboxName, checkboxSplit, size);
+        checkboxName[size] = '\0';
+        // Serial.println(checkboxName);
+
+        if(strlen(checkboxName) > 0){
+            
+            // get the registered variable for the inputbox
+            bool* checkboxVariable = getCheckboxVariable(checkboxName);
+
+            if(checkboxVariable != NULL){
+
+                while (checkboxSplit != NULL){
+
+                    
+                    checkboxSplit = strtok (NULL, "\"");
+                    // Serial.println(checkboxSplit);
+                    
+                    if(checkboxSplit != NULL){
+
+                        // assign value
+                        if(strcmp(checkboxSplit, "true") == 0){
+                            *checkboxVariable = true;
+                        }else{
+                            *checkboxVariable = false;
+                        }
+                        request->send(200, "application/json", "");
+
+                    }   
+                }
+           }else{
+                Serial.println("Variable not found");
+                request->send(501, "text/plain", "Variable was not found!");
+           }
+
+        }else{
+            request->send(406, "text/plain", "No checkbox name was provided!");
+        }
+        delete [] checkbox;
+        delete [] checkboxName;
   });
 
     server->addHandler(handler);
@@ -379,6 +441,18 @@ void* RestApi::getIputVariable(const char* inputName){
             }
         }
         Serial.println("Ops... Input box not found!\n");
+    }
+    return NULL;
+}
+
+bool* RestApi::getCheckboxVariable(const char* checkboxName){
+    if(strlen(checkboxName) > 0){
+        for(int i = 0; i < this->componentsCounter; i++){
+            if(strcmp(this->pageComponents[i]->name, checkboxName) == 0 && this->pageComponents[i]->type == TYPE_CHECKBOX){
+                return ((Checkbox*)this->pageComponents[i])->variable;
+            }
+        }
+        Serial.println("Ops... Checkbox not found!\n");
     }
     return NULL;
 }

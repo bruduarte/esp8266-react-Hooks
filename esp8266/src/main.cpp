@@ -234,6 +234,11 @@ void loop() {
 
 	loopTime();
 	loopWifi();
-	Serial.println(input);
+	// Serial.println(input);
+	// if(toggle == true) {
+	// 	Serial.println(true);
+	// }else{
+	// 	Serial.println(false);
+	// }
 }	
 
