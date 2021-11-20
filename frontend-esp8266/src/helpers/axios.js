@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const baseURL = process.env.REACT_APP_BACKEND_URL;
+const baseURL = process.env.REACT_APP_HTTP_ROOT;
 
 console.log("baseURL: ",baseURL);
 let headers = {"Content-type": "application/json"};

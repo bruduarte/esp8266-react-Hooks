@@ -1,9 +1,20 @@
 import React from 'react';
 import {Button, Grid, Segment, Form} from 'semantic-ui-react';
+import ButtonDataService from '../../services/dataService';
 
 
 
-const CustomButton = ({children, onClick}) => {
+const CustomButton = ({children}) => {
+
+    const handleOnClick =  async () =>  {
+        // var data = {
+        //     name: children
+        // };
+        const response = await ButtonDataService.handleButtonClick(children);
+        console.log(children);
+        console.log(response);
+    };
+
     return (
         <Grid centered >
                 <Grid.Column> 
@@ -12,7 +23,7 @@ const CustomButton = ({children, onClick}) => {
                             <Form.Field>    
                                 <Button
                                     basic
-                                    onClick={onClick}
+                                    onClick={handleOnClick}
                                     color="pink"    
                                     >
                                 {children}
