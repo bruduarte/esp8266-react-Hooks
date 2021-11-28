@@ -124,10 +124,10 @@ void WiFiManager::setupMdns() {
 
 bool WiFiManager::isConnected(){
     if(WiFi.status() == WL_CONNECTED){
-        Serial.println("\n\tConnection established!");  
+        // Serial.println("\n\tConnection established!");  
         return true;
     }else{
-        Serial.println("Currently not connected to WiFi.\n");
+        // Serial.println("Currently not connected to WiFi.\n");
         return false;
     }
     

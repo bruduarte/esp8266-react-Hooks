@@ -81,7 +81,7 @@ class RestApi {
     public:
         RestApi(AsyncWebServer* server, AsyncEventSource* events, ConfigManager *configurationManager);
         ~RestApi();
-        void registerButton(void (*function)(), const char* buttonName); //receives a void function without args
+        void registerButton(void (*function)(), const char* buttonName); //receives a function pointer without args
         void registerInput(void* variable, const char* inputName, const char* placeholder, const char* label, const char* httpInputType);
         void registerCheckbox(bool* variable, const char* name, const char* label);
 

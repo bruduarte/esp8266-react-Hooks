@@ -15,7 +15,8 @@ const char* ssid     = "UPC7472663";          // The SSID (name) of the Wi-Fi ne
 const char* password = "a6Qmsbhnwrdk";        // The password of the Wi-Fi network
 const char* ntpServer = "pool.ntp.org";       // default ntp server
 int ntpOffset = 0;                            // default ntp offset
-
+unsigned long timeSpent = 0;
+unsigned long timeSpentWifi = 0;
 
 
 WiFiUDP wifiUDP;
@@ -45,6 +46,9 @@ void setupESP(){
 	Serial.println("Setup ESP8266...\n");
 
 	SPIFFS.begin();  // Start the SPI Flash Files System
+
+	timeSpent = millis();
+	timeSpentWifi = millis();
 
 	Serial.println("Done :) ...\n");
 }
@@ -110,58 +114,64 @@ void setup() {
 }
 
 void loopTime(){
-	ConfigEntry config;
-	int ntpDSTstartDate = atoi(configurationManager.getConfigValue(TIMEMAN_CONFIG_NTP_DST_START_DATE).c_str()); //gets the start date of DST as ineger
-	int ntpDSTendDate = atoi(configurationManager.getConfigValue(TIMEMAN_CONFIG_NTP_DST_END_DATE).c_str()); //gets the end date of DST as integer
+	if(!APMode){
 
-	if (timeManager.getNTPClient()->getEpochTime() > 1609506000){
-	// current time is after Friday, January 1, 2021 1:00:00 PM
-    // it means we aleady have a valid time
-		
-		//check if DST is enabled
-		if(configurationManager.getConfigValue(TIMEMAN_CONFIG_NTP_DST_ENABLED) == "true"){
-			int now = timeManager.getNTPClient()->getEpochTime(); //gets current date
-			//check if now is in the range of DST
-			if(now >= ntpDSTstartDate &&  now <= ntpDSTendDate){	
-				timeManager.setDSToffset(true);
+		ConfigEntry config;
+		int ntpDSTstartDate = atoi(configurationManager.getConfigValue(TIMEMAN_CONFIG_NTP_DST_START_DATE).c_str()); //gets the start date of DST as ineger
+		int ntpDSTendDate = atoi(configurationManager.getConfigValue(TIMEMAN_CONFIG_NTP_DST_END_DATE).c_str()); //gets the end date of DST as integer
+
+		if (timeManager.getNTPClient()->getEpochTime() > 1609506000){
+		// current time is after Friday, January 1, 2021 1:00:00 PM
+		// it means we aleady have a valid time
+			
+			//check if DST is enabled
+			if(configurationManager.getConfigValue(TIMEMAN_CONFIG_NTP_DST_ENABLED) == "true"){
+				int now = timeManager.getNTPClient()->getEpochTime(); //gets current date
+				//check if now is in the range of DST
+				if(now >= ntpDSTstartDate &&  now <= ntpDSTendDate){	
+					timeManager.setDSToffset(true);
+				}else{
+					timeManager.setDSToffset(false);
+				}	
 			}else{
 				timeManager.setDSToffset(false);
-			}	
-		}else{
-			timeManager.setDSToffset(false);
+			}
+
+			if(printTime){
+				Serial.print("Current time: ");
+				Serial.println(timeManager.getFormattedTtime());
+				printTime = false;
+			}
+
+
 		}
 
-		if(printTime){
-			Serial.print("Current time: ");
-			Serial.println(timeManager.getFormattedTtime());
-			printTime = false;
-		}
 
-
-  	}
-
-
-	if(configurationManager.getConfigStatus(TIMEMAN_CONFIG_NTP_OFFSET).equals(CONFIG_STATUS_CHANGED)){
-		// config has changed. Reload config and force update
-		
-		Serial.println("Time config changed.");
-		ErrorType error = configurationManager.getConfig(&config, TIMEMAN_CONFIG_NTP_OFFSET);
-		if(error == RET_OK){
-			int offset = atoi(config.value.c_str());
-			Serial.printf("Set timeoffset to %d\n", offset);
-			timeManager.setTimeOffset(offset, true);  // force update
+		if(configurationManager.getConfigStatus(TIMEMAN_CONFIG_NTP_OFFSET).equals(CONFIG_STATUS_CHANGED)){
+			// config has changed. Reload config and force update
 			
-			printTime = true;
+			Serial.println("Time config changed.");
+			ErrorType error = configurationManager.getConfig(&config, TIMEMAN_CONFIG_NTP_OFFSET);
+			if(error == RET_OK){
+				int offset = atoi(config.value.c_str());
+				Serial.printf("Set timeoffset to %d\n", offset);
+				timeManager.setTimeOffset(offset, true);  // force update
+				
+				printTime = true;
 
-			configurationManager.updateConfigStatus(TIMEMAN_CONFIG_NTP_OFFSET, "ok");
+				configurationManager.updateConfigStatus(TIMEMAN_CONFIG_NTP_OFFSET, "ok");
+			}
+		}else{
+			// no config change. Just run normal update
+			timeManager.update();
 		}
-	}else{
-		// no config change. Just run normal update
-		timeManager.update();
-	}
 
-	printTime = true;
-	delay(1000);
+		if(millis() - timeSpent >= 1000){
+			printTime = true;
+			timeSpent = millis();
+		}
+		
+	}
 	
 }
 
@@ -201,23 +211,33 @@ void loopWifi(){
 
 	case WifiStates::WAIT_CHANGE:
 
-		Serial.println("...\n");
+		// Serial.println("...\n");
 		if(configurationManager.getConfigStatus(WIFIMAN_CONFIG_SSID).equals(CONFIG_STATUS_CHANGED) || configurationManager.getConfigStatus(WIFIMAN_CONFIG_PASSWORD).equals(CONFIG_STATUS_CHANGED)){
 
 			Serial.println("Wifi credentials changed.");
 			configurationManager.updateConfigStatus(WIFIMAN_CONFIG_SSID, "ok");
 			configurationManager.updateConfigStatus(WIFIMAN_CONFIG_PASSWORD, "ok");
 			wifiManager.disconnect();
+			APMode = false;
 			state = WifiStates::LOADING_CONFIGS;
 
 		}
 		else if(APMode){
-			state = WifiStates::WAIT_CHANGE;
+			if(millis() - timeSpentWifi >= 5000){
+				Serial.println("APMode on...");
+				timeSpentWifi = millis();
+			}
 		}
 		else if(!wifiManager.isConnected()){
 			state = WifiStates::LOADING_CONFIGS;
+			Serial.println("Trying to connect to WiFi...");
+			
 		}else {
 			//Just wait...
+			if(millis() - timeSpentWifi >= 1000){
+				Serial.println("...");
+				timeSpentWifi = millis();
+			}
 		}
 
 		break;
@@ -231,14 +251,15 @@ void loopWifi(){
 }
 
 void loop() { 
-
+	
 	loopTime();
 	loopWifi();
-	Serial.println(input);
-	if(toggle == true) {
-		Serial.println(true);
-	}else{
-		Serial.println(false);
-	}
+	delay(10);
+	// Serial.println(input);
+	// if(toggle == true) {
+	// 	Serial.println(true);
+	// }else{
+	// 	Serial.println(false);
+	// }
 }	
 

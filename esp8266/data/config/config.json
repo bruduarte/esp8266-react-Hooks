@@ -1,7 +1,7 @@
 {
   "wifiSSID": "UPC7472663",
   "wifiPassword": "a6Qmsbhnwrdk",
-  "ntpOffset": "1200",
+  "ntpOffset": "3600",
   "ntpDSToffset" : "3600",
   "ntpDSTenabled" : "true",
   "ntpDSTstartDate" : "1626818400000",

@@ -16,7 +16,9 @@ RestApi::RestApi(AsyncWebServer* server, AsyncEventSource* events, ConfigManager
     });
 
     server->on("/", HTTP_GET, [](AsyncWebServerRequest *request){
-        request->send(200, "text/plain", "Hello ESP8266!");
+        AsyncWebServerResponse *response = request->beginResponse(SPIFFS, "/www/index.html.gz", "text/html", false);
+        response->addHeader("Content-Encoding", "gzip");
+        request->send(response);
     });
 
     
