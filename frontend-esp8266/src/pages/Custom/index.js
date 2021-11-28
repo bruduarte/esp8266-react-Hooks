@@ -45,20 +45,6 @@ const CustomContainer = () => {
                         );
                     }, this)
                 }
-                    
-                    <CustomButton 
-                        type= 'submit'
-                        onClick = {() => alert("Button 1 clicked")}
-                    >
-                        Teste
-                    </CustomButton>
-                    <CustomButton 
-                        type= 'submit'
-                        onClick = {() => alert("Button 2 clicked")}
-                    >
-                        Teste2
-                    </CustomButton>
-    
 
         </div>
     )
