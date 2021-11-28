@@ -1,6 +1,4 @@
-#include <ESP8266WiFi.h>
 #include <ESPAsyncWebServer.h>
-#include <AsyncEventSource.h>
 #include <FS.h>
 #include <WiFiUdp.h>
 #include <string>
@@ -11,44 +9,49 @@
 #include <TimeManager.hpp>
 #include <WiFiManager.hpp>
 
-const char* ssid     = "UPC7472663";          // The SSID (name) of the Wi-Fi network you want to connect to
-const char* password = "a6Qmsbhnwrdk";        // The password of the Wi-Fi network
+//Configuration Manager
+ConfigManager configurationManager;
+
+//Time Management
+bool printTime = true;
 const char* ntpServer = "pool.ntp.org";       // default ntp server
 int ntpOffset = 0;                            // default ntp offset
-unsigned long timeSpent = 0;
-unsigned long timeSpentWifi = 0;
-
-
 WiFiUDP wifiUDP;
-AsyncWebServer server(80);
-AsyncEventSource events("/events");
-ConfigManager configurationManager;
-WiFiManager wifiManager(&configurationManager);
 TimeManager timeManager(wifiUDP, ntpServer, ntpOffset);
-RestApi restApi(&server, &events, &configurationManager);
 
-bool printTime = true;
+//WiFi Management
 bool APMode = false;
 enum class WifiStates {LOADING_CONFIGS, CHECK_STATUS, STARTING_CONNECTION, START_AP, WAIT_CHANGE};
 WifiStates state = WifiStates::LOADING_CONFIGS;
+WiFiManager wifiManager(&configurationManager);
 
-char input[MAX_INPUT_SIZE];
-bool toggle;
+//Server
+AsyncWebServer server(80);
+RestApi restApi(&server, &configurationManager);
 
-void testeIdeiaGenio () {
-	Serial.println("Hola! Que Tal?");
+//Custom page
+char input[MAX_INPUT_SIZE]; //variable for input field
+bool toggle; //variable for checkbox
+//function to be called when a button is clicked
+void testButtonFunction () {
+	Serial.println("Button clicked!");
 }
+
+//helper variables
+unsigned long timeElapsed = 0;
+unsigned long timeElapsedWifi = 0;
+
 
 void setupESP(){
 
 	Serial.begin(9600);         // Start the Serial communication to send messages to the computer
 	delay(10);
-	Serial.println("Setup ESP8266...\n");
+	Serial.println("Setup ESP8266...");
 
 	SPIFFS.begin();  // Start the SPI Flash Files System
 
-	timeSpent = millis();
-	timeSpentWifi = millis();
+	timeElapsed = millis();
+	timeElapsedWifi = millis();
 
 	Serial.println("Done :) ...\n");
 }
@@ -89,35 +92,29 @@ void setupConfig(){
 }
 
 
-void setupWifi(){
-	wifiManager.begin();
-
-	
-}
-
-
 void setup() {
   
 	setupESP();
 	setupConfig();
-  	setupWifi();
   	setupWebServer();
 	setupTime();
 
-	restApi.registerButton(testeIdeiaGenio, "testeIdea");
-	restApi.registerInput(&input, "name", "placeholder", "label", "text");
-	restApi.registerButton(testeIdeiaGenio, "testeIdea2");
+
+	restApi.registerButton(testButtonFunction, "Button 1");
+	restApi.registerInput(&input, "Example", "Type your name.", "Name", "text");
+	restApi.registerButton(testButtonFunction, "Button 2");
 	restApi.registerCheckbox(&toggle, "toggleLED", "On/Off");
-	restApi.registerButton(testeIdeiaGenio, "testeIdea3");
+	restApi.registerButton(testButtonFunction, "Button 3");
 	
 
 }
 
 void loopTime(){
+	//only retrieves time if connected to network
 	if(!APMode){
 
 		ConfigEntry config;
-		int ntpDSTstartDate = atoi(configurationManager.getConfigValue(TIMEMAN_CONFIG_NTP_DST_START_DATE).c_str()); //gets the start date of DST as ineger
+		int ntpDSTstartDate = atoi(configurationManager.getConfigValue(TIMEMAN_CONFIG_NTP_DST_START_DATE).c_str()); //gets the start date of DST as integer
 		int ntpDSTendDate = atoi(configurationManager.getConfigValue(TIMEMAN_CONFIG_NTP_DST_END_DATE).c_str()); //gets the end date of DST as integer
 
 		if (timeManager.getNTPClient()->getEpochTime() > 1609506000){
@@ -166,9 +163,10 @@ void loopTime(){
 			timeManager.update();
 		}
 
-		if(millis() - timeSpent >= 1000){
+		//only to see if time is correct
+		if(millis() - timeElapsed >= 1000){
 			printTime = true;
-			timeSpent = millis();
+			timeElapsed = millis();
 		}
 		
 	}
@@ -176,6 +174,7 @@ void loopTime(){
 }
 
 void loopWifi(){
+	
 	switch (state)
 	{
 	case WifiStates::LOADING_CONFIGS :
@@ -211,8 +210,9 @@ void loopWifi(){
 
 	case WifiStates::WAIT_CHANGE:
 
-		// Serial.println("...\n");
-		if(configurationManager.getConfigStatus(WIFIMAN_CONFIG_SSID).equals(CONFIG_STATUS_CHANGED) || configurationManager.getConfigStatus(WIFIMAN_CONFIG_PASSWORD).equals(CONFIG_STATUS_CHANGED)){
+		// Checks if wither SSID or Password has changed
+		if( configurationManager.getConfigStatus(WIFIMAN_CONFIG_SSID).equals(CONFIG_STATUS_CHANGED) || 
+			configurationManager.getConfigStatus(WIFIMAN_CONFIG_PASSWORD).equals(CONFIG_STATUS_CHANGED)){
 
 			Serial.println("Wifi credentials changed.");
 			configurationManager.updateConfigStatus(WIFIMAN_CONFIG_SSID, "ok");
@@ -223,9 +223,9 @@ void loopWifi(){
 
 		}
 		else if(APMode){
-			if(millis() - timeSpentWifi >= 5000){
+			if(millis() - timeElapsedWifi >= 5000){
 				Serial.println("APMode on...");
-				timeSpentWifi = millis();
+				timeElapsedWifi = millis();
 			}
 		}
 		else if(!wifiManager.isConnected()){
@@ -234,9 +234,9 @@ void loopWifi(){
 			
 		}else {
 			//Just wait...
-			if(millis() - timeSpentWifi >= 1000){
+			if(millis() - timeElapsedWifi >= 1000){
 				Serial.println("...");
-				timeSpentWifi = millis();
+				timeElapsedWifi = millis();
 			}
 		}
 
@@ -255,11 +255,6 @@ void loop() {
 	loopTime();
 	loopWifi();
 	delay(10);
-	// Serial.println(input);
-	// if(toggle == true) {
-	// 	Serial.println(true);
-	// }else{
-	// 	Serial.println(false);
-	// }
+
 }	
 

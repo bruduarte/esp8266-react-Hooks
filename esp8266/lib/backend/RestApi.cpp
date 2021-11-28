@@ -3,13 +3,7 @@
 
 #include "RestApi.hpp"
 
-RestApi::RestApi(AsyncWebServer* server, AsyncEventSource* events, ConfigManager *configurationManager) {
-    Serial.print("Setting up generic API Endpoints...");
-    events->onConnect([](AsyncEventSourceClient *client){
-        client->send("hello!", NULL, millis(), 1000);
-    });
-
-    server->addHandler(events);
+RestApi::RestApi(AsyncWebServer* server, ConfigManager *configurationManager) {
 
     server->on("/heap", HTTP_GET, [](AsyncWebServerRequest *request){
         request->send(200, "text/plain", String(ESP.getFreeHeap()));
@@ -315,7 +309,7 @@ void RestApi::registerButton(void (*function)(), const char* buttonName){
         button->function = function;
         button->type = TYPE_BUTTON;
 
-        Serial.println(characters);
+        // Serial.println(characters);
         
         strncpy(button->name, buttonName, characters);
         button->name[characters] = '\0';

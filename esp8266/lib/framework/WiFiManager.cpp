@@ -22,6 +22,7 @@ WiFiManager::WiFiManager(ConfigManager* configurations){
     
 }
 
+//this function gets the SSID and password from the configurations file
 bool WiFiManager::begin(){
     ConfigEntry config; //struct to use the getConfig().
     

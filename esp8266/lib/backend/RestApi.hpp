@@ -79,7 +79,7 @@ class RestApi {
     int componentsCounter = 0;
 
     public:
-        RestApi(AsyncWebServer* server, AsyncEventSource* events, ConfigManager *configurationManager);
+        RestApi(AsyncWebServer* server, ConfigManager *configurationManager);
         ~RestApi();
         void registerButton(void (*function)(), const char* buttonName); //receives a function pointer without args
         void registerInput(void* variable, const char* inputName, const char* placeholder, const char* label, const char* httpInputType);
