@@ -21,7 +21,6 @@ const CustomContainer = () => {
     
     console.log(data);
 
-    // debugger;
 
     return(
         <div>
@@ -41,7 +40,7 @@ const CustomContainer = () => {
                                                                             label={pageItem.label}
                                                                             type={pageItem.type}
                                                                             defaultChecked={pageItem.defaultChecked}
-                                                            /> : <>Nada</>
+                                                            /> : <>No valid type received!</>
 
                         );
                     }, this)

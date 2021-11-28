@@ -2,16 +2,6 @@
 
 import axiosInstance from "../helpers/axios";
 
-const getTime = async () => {
-    try{
-        const response = await axiosInstance.get("/Timezone");
-        console.log(response);
-    }
-    catch(e){
-        console.error(e);
-    }
-    // return axiosInstance.get("/Timezone");
-};
 
 const getCustom = async () => {
     try{
@@ -62,7 +52,7 @@ const getCustom = async () => {
 const onSubmitTime = async (data) => {
     try{
         //"/config/update"
-        const response = await axiosInstance.post("/Timezone", data);
+        const response = await axiosInstance.post("/config/update", data);
         console.log(response.statusText);
         return response.statusText;
     }
@@ -74,7 +64,8 @@ const onSubmitTime = async (data) => {
 
 const onSubmitCredentials = async (data) => {
     try{
-        const response = await axiosInstance.post("/Wifi", data);
+        //"/config/update"
+        const response = await axiosInstance.post("/config/update", data);
         console.log(response);
         return response.statusText;
     }
@@ -120,4 +111,4 @@ const handleCheckbox = async (data) => {
 
 
 
-export default {getTime, onSubmitTime, onSubmitCredentials, getCustom, handleButtonClick, handleSubmitIput, handleCheckbox};
+export default {onSubmitTime, onSubmitCredentials, getCustom, handleButtonClick, handleSubmitIput, handleCheckbox};

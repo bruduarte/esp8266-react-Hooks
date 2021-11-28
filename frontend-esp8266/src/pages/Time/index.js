@@ -60,7 +60,7 @@ const TimeContainer = () => {
 
         const response = await TimeDataService.onSubmitTime(data);
         console.log(response);
-        if(response !== "Created"){
+        if(response !== "OK"){
             setError(true);
         }
         

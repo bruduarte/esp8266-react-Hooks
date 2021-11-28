@@ -30,7 +30,7 @@ const WifiContainer = () => {
 
         const response = await WifiDataService.onSubmitCredentials(data);
         console.log(response);
-        if(response !== "Created"){
+        if(response !== "OK"){
             setError(true);
         }else{
             setError(false);

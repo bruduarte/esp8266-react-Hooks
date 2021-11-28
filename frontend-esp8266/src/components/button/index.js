@@ -7,9 +7,7 @@ import ButtonDataService from '../../services/dataService';
 const CustomButton = ({children}) => {
 
     const handleOnClick =  async () =>  {
-        // var data = {
-        //     name: children
-        // };
+
         const response = await ButtonDataService.handleButtonClick(children);
         console.log(children);
         console.log(response);
@@ -17,7 +15,7 @@ const CustomButton = ({children}) => {
 
     return (
         <Grid centered >
-                <Grid.Column> 
+                <Grid.Column style={{maxWidth: 500, marginTop: 20}}> 
                     <Segment>
                         <Form>
                             <Form.Field>    
